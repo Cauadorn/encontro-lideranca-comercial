@@ -193,6 +193,13 @@
   .foto figcaption { position: absolute; left: 16px; bottom: 16px; background: #fff; color: var(--tinta); border-radius: 999px;
                      padding: 10px 18px; font-weight: 500; font-size: 14px; box-shadow: 0 8px 20px rgba(0,0,0,.15); }
 
+  /* a defesa por escrito (19/10, ele: "a defesa tem que estar no site também... um texto só explicando") */
+  #defesa { padding-top: clamp(40px, 5vw, 80px); padding-bottom: clamp(80px, 9vw, 130px); }
+  .texto-defesa { background: #fff; border-radius: 24px; box-shadow: 0 10px 30px rgba(91,91,91,.10); margin-top: 44px;
+                  padding: clamp(28px, 5vw, 64px); max-width: 860px; }
+  .texto-defesa h3 { font-weight: 700; font-size: clamp(20px, 2.2vw, 26px); line-height: 1.2; color: var(--vermelho); margin-top: 40px; }
+  .texto-defesa h3:first-child { margin-top: 0; }
+  .texto-defesa .txt { margin-top: 12px; max-width: 700px; }
   /* 10. fim */
   #fim { min-height: min(92svh, 820px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 56px; color: #fff;
          background: var(--conv); text-align: center; padding-top: 110px; padding-bottom: 70px; }
@@ -377,6 +384,28 @@
         <figure class="foto alta"><img src="assets/aplic-camiseta-2.webp?v=20" alt="Camiseta vermelha dobrada" loading="lazy"><figcaption>Camiseta vermelha</figcaption></figure>
       </div>
       <div class="fotos-nav" aria-hidden="true"><span>Deslize para o lado</span><span class="barra-f"><i></i></span><span><b id="foto-n">1</b> de 7</span></div>
+    </div>
+  </section>
+
+  <!-- 9b · a defesa por escrito (o mesmo texto de 03 Entrega\Defesa dos selos) -->
+  <section id="defesa" class="claro-sec">
+    <div class="bloco">
+      <div class="rotulo">A defesa</div>
+      <h2><span class="l">Por que</span><br><span class="f">esta identidade</span></h2>
+      <div class="texto-defesa">
+        <h3>De onde partimos</h3>
+        <p class="txt">A referência que recebemos foi a Convenção de Líderes Comerciais da Bevi, de 2024. O que faz aquele evento funcionar não é um desenho específico, é o sistema: uma estampa só abre o painel, o telão e o bloquinho; um selo único se repete igual em todas as peças; o painel de fundo vira o lugar da foto; e a camiseta leva só o símbolo no peito.</p>
+        <h3>O que levamos</h3>
+        <p class="txt">Trouxemos esse sistema, não o desenho. Tudo aqui nasce do que já é da CREDFRANCO: o squircle, único grafismo da marca, e o vermelho da convenção, do vinho ao rosa. A estampa do encontro é feita das formas do squircle nesses tons. E tudo na escala do encontro: um dia, básico, sem gastar as ideias da Convenção de março.</p>
+        <h3>O símbolo</h3>
+        <p class="txt">São três peças do squircle, o mesmo desenho em três tamanhos, que sobem como um gráfico e chegam ao vermelho mais forte no topo. É a frase do encontro em forma: liderança que move bons resultados. O símbolo é o mesmo nas duas opções de selo.</p>
+        <h3>Selo A · Ascensão</h3>
+        <p class="txt">As peças apoiam na linha de “Encontro de” e ocupam a largura de “Liderança”, formando um bloco só. Quase quadrado, ele lê bem mesmo pequeno: no peito da camiseta, no crachá, no copo e no bloquinho.</p>
+        <h3>Selo B · Ao lado</h3>
+        <p class="txt">O mesmo símbolo vai para o lado do nome e ganha a altura dele, do topo de “Encontro de” à base de “Comercial”. É horizontal: ocupa bem o telão, o painel de fundo, as faixas e os slides, e o símbolo aparece maior, como nas assinaturas de conferência.</p>
+        <h3>A escolha</h3>
+        <p class="txt">Símbolo, cores, fonte e estampa são os mesmos nos dois. A escolha é só qual deles assina o encontro. Qualquer uma mantém o evento com uma cara só.</p>
+      </div>
     </div>
   </section>
 
@@ -608,6 +637,7 @@ window.LAYOUT = document.fonts.ready.then(() => {
     gsap.from(f, { y: 70, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: f, start: 'top 92%' } });
     gsap.fromTo(f.querySelector('img'), { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: f, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
+  gsap.from('.texto-defesa', { y: 50, opacity: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.texto-defesa', start: 'top 88%' } });
   gsap.from('#fim .selo, #fim .logo-box, #fim small', { y: 30, opacity: 0, duration: 0.9, stagger: 0.12, scrollTrigger: { trigger: '#fim', start: 'top 60%' } });
 });
 // no celular a barra do navegador some e volta ao rolar (muda só a altura): isso não remonta a página (dava pulo)
