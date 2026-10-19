@@ -92,7 +92,7 @@
   .selo .e { font-weight: 400; font-size: calc(var(--s) * .40); line-height: 1; }
   .selo .a { font-weight: 700; font-size: var(--s); line-height: .86; letter-spacing: -.04em; margin-left: -.05em; }
   .selo .b { font-weight: 400; font-size: var(--s); line-height: .86; letter-spacing: -.035em; text-align: left; margin-left: -.027em; }   /* C sob o L e o l sob o a (medido) */
-  .selo .b .kc { letter-spacing: -.05em; }   /* plural (19/10): "Comerc" um tico mais junto leva o pingo do i para longe do cedilha (folga 10%), sem colar o c no i */   /* o pingo do i longe do cedilha do ç (medido: folga 4% do corpo) */
+  .selo .a .la { letter-spacing: -.03em; } .selo .a .lb { letter-spacing: -.07em; } .selo .b .kd { letter-spacing: .008em; }   /* plural (19/10, ele: "tem que estar no mesmo tamanho"): Lideranças e Comerciais com a mesma largura e o pingo do i longe do cedilha (folga 8%) */   /* plural (19/10): "Comerc" um tico mais junto leva o pingo do i para longe do cedilha (folga 10%), sem colar o c no i */   /* o pingo do i longe do cedilha do ç (medido: folga 4% do corpo) */
   .selo.branco { color: #fff; }
   .selo.claro .e { color: var(--leve); } .selo.claro .a { color: var(--vermelho); } .selo.claro .b { color: var(--tinta); }
   .selo.um { color: var(--vermelho); }
@@ -403,13 +403,13 @@
       <div class="rotulo">Na prática</div>
       <h2><span class="l">O encontro</span> <span class="f">inteiro</span></h2>
       <div class="fotos">
-        <figure class="foto larga"><img src="assets/aplic-telao.webp?v=23" alt="Telão do auditório com o selo" loading="lazy"><figcaption>Telão do auditório</figcaption></figure>
-        <figure class="foto alta"><img src="assets/aplic-painel.webp?v=23" alt="Painel para fotos" loading="lazy"><figcaption>Painel para fotos</figcaption></figure>
-        <figure class="foto alta"><img src="assets/aplic-agenda.webp?v=23" alt="Bloquinho e caneta" loading="lazy"><figcaption>Bloquinho e caneta</figcaption></figure>
-        <figure class="foto alta"><img src="assets/aplic-copo-1.webp?v=23" alt="Copo branco no coffee break" loading="lazy"><figcaption>Copo branco</figcaption></figure>
-        <figure class="foto alta"><img src="assets/aplic-copo-2.webp?v=23" alt="Copo vermelho na mão" loading="lazy"><figcaption>Copo vermelho</figcaption></figure>
-        <figure class="foto alta"><img src="assets/aplic-camisa-op1.webp?v=23" alt="Camisa vermelha com a logo da CREDFRANCO no peito e o selo nas costas" loading="lazy"><figcaption>Camisa · logo no peito</figcaption></figure>
-        <figure class="foto alta"><img src="assets/aplic-camisa-op2.webp?v=23" alt="Camisa vermelha com o selo no peito, a logo na manga e a frase nas costas" loading="lazy"><figcaption>Camisa · frase nas costas</figcaption></figure>
+        <figure class="foto larga"><img src="assets/aplic-telao.webp?v=24" alt="Telão do auditório com o selo" loading="lazy"><figcaption>Telão do auditório</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-painel.webp?v=24" alt="Painel para fotos" loading="lazy"><figcaption>Painel para fotos</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-agenda.webp?v=24" alt="Bloquinho e caneta" loading="lazy"><figcaption>Bloquinho e caneta</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-copo-1.webp?v=24" alt="Copo branco no coffee break" loading="lazy"><figcaption>Copo branco</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-copo-2.webp?v=24" alt="Copo vermelho na mão" loading="lazy"><figcaption>Copo vermelho</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-camisa-op1.webp?v=24" alt="Camisa vermelha com a logo da CREDFRANCO no peito e o selo nas costas" loading="lazy"><figcaption>Camisa · logo no peito</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-camisa-op2.webp?v=24" alt="Camisa vermelha com o selo no peito, a logo na manga e a frase nas costas" loading="lazy"><figcaption>Camisa · frase nas costas</figcaption></figure>
       </div>
       <div class="fotos-nav" aria-hidden="true"><span>Deslize para o lado</span><span class="barra-f"><i></i></span><span><b id="foto-n">1</b> de 7</span></div>
     </div>
@@ -480,7 +480,9 @@ window.SELO = (function () {
       im.style.width = (k * w) + 'px'; im.style.height = (k * w * RAZAO) + 'px'; box.appendChild(im); return im; });
   }
   function montar(selo) {
-    const bq = selo.querySelector('.b'); if (!bq.querySelector('.kc')) bq.innerHTML = bq.textContent.replace(/Comerc(?=ia)/, '<span class="kc">Comerc</span>');
+    const bq = selo.querySelector('.b'), aq = selo.querySelector('.a');
+    if (!aq.querySelector('.la') && /Lideranças/.test(aq.textContent)) aq.innerHTML = aq.textContent.replace('Lideranças', '<span class="la">Lideran</span><span class="lb">ças</span>');
+    if (!bq.querySelector('.kd') && /Comerciais/.test(bq.textContent)) bq.innerHTML = bq.textContent.replace('Comerciais', 'Comerc<span class="kd">iais</span>');
     selo.style.paddingTop = ''; selo.style.paddingLeft = '';
     const S = parseFloat(getComputedStyle(selo.querySelector('.a')).fontSize);
     const e = selo.querySelector('.e'), a = selo.querySelector('.a'), b = selo.querySelector('.b');
@@ -519,8 +521,9 @@ window.SELO = (function () {
       caixas.push({ x0: x, x1: x + k * w, y0: base - h, y1: base }); x += (k + G) * w; });
     const xt = x - G * w + 0.34 * S;
     texto('Encontro de', 400, S, -0.02, 'e', xt, 0);
-    texto('Lideranças', 700, S, -0.04, 'a', xt, P * S);
-    texto('Comerciais', 400, S, -0.035, 'b', xt, base);
+    const L = texto('Lideranças', 700, S, -0.04, 'a', xt, P * S);
+    const t0 = tinta('Comerciais', 400, S, -0.035), lsC = -0.035 + ((L.x1 - L.x0) - (t0.r - t0.l)) / (9 * S);   // mesma largura de "Lideranças"
+    texto('Comerciais', 400, S, lsC, 'b', xt, base);
     const bx0 = Math.min(...caixas.map(c => c.x0)), by0 = Math.min(...caixas.map(c => c.y0));
     const bx1 = Math.max(...caixas.map(c => c.x1)), by1 = Math.max(...caixas.map(c => c.y1));
     return { itens, bx0, by0, W: bx1 - bx0, H: by1 - by0 };
