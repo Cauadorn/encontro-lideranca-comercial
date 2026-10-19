@@ -6,9 +6,15 @@
 <title>Encontro de Liderança Comercial · Proposta de identidade</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#8C0C1D">
-<!-- só este modo, sem tema escuro (ele, 19/10: "não é para ter em modo escuro. É somente esta cor, esse modo"): "only light"
-     impede o celular (Chrome Android, Samsung Internet) de escurecer a página sozinho -->
+<!-- só este modo, sem tema escuro (ele, 19/10: "não é para ter em modo escuro. É somente esta cor, esse modo"; depois:
+     "não funcionou... mesmo que o celular esteja no modo escuro, eu quero que proíba 100%"). Três travas juntas:
+     1) color-scheme "only light" (meta + CSS em html/body): o Chrome (e o navegador do WhatsApp/Instagram) não escurece;
+     2) um "tema escuro" que é IGUAL ao claro (@media prefers-color-scheme: dark, no CSS): o Samsung Internet só deixa de
+        escurecer quando o site tem tema escuro próprio — e o nosso é o mesmo claro;
+     3) darkreader-lock e supported-color-schemes: extensões e leitores antigos também ficam no claro. -->
 <meta name="color-scheme" content="only light">
+<meta name="supported-color-schemes" content="light only">
+<meta name="darkreader-lock">
 <link rel="icon" type="image/png" href="assets/icone-64.png">
 <link rel="apple-touch-icon" href="assets/icone-180.png">
 <meta property="og:type" content="website">
@@ -38,8 +44,15 @@
     --conv: radial-gradient(120% 90% at 50% 40%, #B3132A 0%, #8C0C1D 50%, #5E0912 100%);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { -webkit-text-size-adjust: 100%; }
-  body { font-family: 'Ubuntu', system-ui, sans-serif; color: var(--tinta); background: var(--estudio); overflow-x: hidden; }
+  html { -webkit-text-size-adjust: 100%; color-scheme: only light; background: #E9E9E9; }
+  body { font-family: 'Ubuntu', system-ui, sans-serif; color: var(--tinta); background: var(--estudio); overflow-x: hidden; color-scheme: only light; }
+  /* o "tema escuro" do site é o próprio claro (trava 2 do cabeçalho): o navegador vê que o site cuida do escuro e não pinta nada */
+  @media (prefers-color-scheme: dark) {
+    html { background: #E9E9E9; color-scheme: only light; }
+    body { background: #E9E9E9; color: #5B5B5B; color-scheme: only light; }
+    .claro-sec, #estampa { background: #E9E9E9; }
+    .card, .cartao, .grade4 .c, .texto-defesa, .ref-bevi figure { background-color: #fff; }
+  }
   img { display: block; max-width: 100%; }
 
   /* fundo da abertura: o vermelho da convenção + a parede 3D (canvas de trás) + um véu atrás do título */
@@ -210,6 +223,11 @@
   .texto-defesa h3 { font-weight: 700; font-size: clamp(20px, 2.2vw, 26px); line-height: 1.2; color: var(--vermelho); margin-top: 40px; }
   .texto-defesa h3:first-child { margin-top: 0; }
   .texto-defesa .txt { margin-top: 12px; max-width: 700px; }
+  .ref-bevi { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.6vw, 16px); margin-top: 24px; }
+  .ref-bevi figure { border-radius: 16px; overflow: hidden; background: #fff; box-shadow: 0 6px 18px rgba(91,91,91,.12); }
+  .ref-bevi img { width: 100%; height: clamp(120px, 17vw, 200px); object-fit: cover; }
+  .ref-bevi figcaption { font-weight: 500; font-size: clamp(14px, 1.5vw, 16px); line-height: 1.3; color: var(--tinta); padding: 12px 14px 14px; text-wrap: balance; }
+  .ref-fonte { font-size: 13px; line-height: 1.3; color: var(--leve); margin-top: 12px; }
   /* 10. fim */
   #fim { min-height: min(92svh, 820px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 56px; color: #fff;
          background: var(--conv); text-align: center; padding-top: 110px; padding-bottom: 70px; }
@@ -405,6 +423,14 @@
       <div class="texto-defesa">
         <h3>De onde partimos</h3>
         <p class="txt">A referência que recebemos foi a Convenção de Líderes Comerciais da Bevi, de 2024. O que faz aquele evento funcionar não é um desenho específico, é o sistema: uma estampa só abre o painel, o telão e o bloquinho; um selo único se repete igual em todas as peças; o painel de fundo vira o lugar da foto; e a camiseta leva só o símbolo no peito.</p>
+        <!-- a referência da Bevi em imagem (ele, 19/10: "adicione esta parte aqui na página" — a página 02 da defesa em PDF) -->
+        <div class="ref-bevi">
+          <figure><img src="assets/ref-bevi-1.webp" style="object-position:50% 74%" alt="Painel da convenção da Bevi com a estampa" loading="lazy"><figcaption>Uma estampa só abre o painel, o telão e o&nbsp;bloquinho.</figcaption></figure>
+          <figure><img src="assets/ref-bevi-2.webp" style="object-position:50% 48%" alt="Selo da convenção da Bevi com o ano numa caixa" loading="lazy"><figcaption>Um selo único, igual em todas as&nbsp;peças.</figcaption></figure>
+          <figure><img src="assets/ref-bevi-3.webp" style="object-position:50% 35%" alt="Painel de fundo da Bevi usado para fotos" loading="lazy"><figcaption>O painel de fundo virou o lugar da&nbsp;foto.</figcaption></figure>
+          <figure><img src="assets/ref-bevi-4.webp" style="object-position:50% 100%" alt="Camiseta da Bevi com o símbolo no peito" loading="lazy"><figcaption>A camiseta leva só o símbolo no&nbsp;peito.</figcaption></figure>
+        </div>
+        <p class="ref-fonte">Quadros dos vídeos da convenção no Instagram da Bevi, julho de 2024.</p>
         <h3>O que levamos</h3>
         <p class="txt">Trouxemos esse sistema, não o desenho. Tudo aqui nasce do que já é da CREDFRANCO: o squircle, único grafismo da marca, e o vermelho da convenção, do vinho ao rosa. A estampa do encontro é feita das formas do squircle nesses tons. E tudo na escala do encontro: um dia, básico, sem gastar as ideias da Convenção de março.</p>
         <h3>O símbolo</h3>
@@ -596,7 +622,7 @@ function desenharGuias() {
 /* sem viúva: as três últimas palavras de cada texto ficam juntas na última linha */
 function semViuva(el) { if (el.dataset.sv) return; el.dataset.sv = 1;
   const p = el.innerHTML.split(' '); if (p.length > 4) el.innerHTML = p.slice(0, -2).join(' ') + '\u00A0' + p.slice(-2).join('\u00A0'); }
-document.querySelectorAll('.txt').forEach(semViuva);
+document.querySelectorAll('.txt, .ref-fonte').forEach(semViuva);
 
 /* barra de cima: clara nas seções claras, vermelha nas escuras */
 const NAV = document.getElementById('nav'), ESCURAS = ['abertura', 'frase', 'fim'].map(id => document.getElementById(id));
