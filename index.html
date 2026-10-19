@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encontro de Liderança Comercial · Proposta de identidade</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#8C0C1D">
+<link rel="icon" type="image/png" href="assets/icone-64.png">
+<link rel="apple-touch-icon" href="assets/icone-180.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Encontro de Liderança Comercial">
+<meta property="og:description" content="Proposta de identidade visual · CREDFRANCO e CF Promotora">
+<meta property="og:image" content="https://cauadorn.github.io/encontro-lideranca-comercial/assets/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:url" content="https://cauadorn.github.io/encontro-lideranca-comercial/">
+<meta name="twitter:card" content="summary_large_image">
+<!-- Site de apresentação (17/10, #6800). Pedido dele: "apresentação em site animado... algo surpreendente, que mostre o
+     logo se formando". Abertura: a estampa vira uma parede 3D de peças do squircle; três peças se soltam (deixam o
+     buraco), giram e encaixam no título (o selo A · Ascensão). Na rolagem dão uma volta sozinhas, afastam em
+     profundidade e viajam até "Ascensão" (peças clicáveis). Regras do site da Babi no METODO-ARTE §1 (marca se forma,
+     viagem com profundidade, descoberta por toque, cores do mesmo tamanho que sobem, espaços diferentes entre seções,
+     celular primeiro). Texto = PROPOSTA nossa (avisar só na mensagem). Sem o 3D, tudo funciona em HTML. -->
+<style>
+  /* fontes recortadas no latim (WOFF, 156 KB no lugar de 1,2 MB): o celular abre mais rápido (19/10) */
+  @font-face { font-family: 'Ubuntu'; src: url('assets/Ubuntu-Light.woff') format('woff');   font-weight: 300; font-display: swap; }
+  @font-face { font-family: 'Ubuntu'; src: url('assets/Ubuntu-Regular.woff') format('woff'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Ubuntu'; src: url('assets/Ubuntu-Medium.woff') format('woff');  font-weight: 500; font-display: swap; }
+  @font-face { font-family: 'Ubuntu'; src: url('assets/Ubuntu-Bold.woff') format('woff');    font-weight: 700; font-display: swap; }
+  :root {
+    --vermelho: #EF3D48; --carmim: #C21A30; --vinho: #5E0912; --vinho2: #8C0C1D; --rosa: #F6C9CD;
+    --tinta: #5B5B5B; --corpo: #606060; --leve: #6D6D6D; --estudio: #E9E9E9;
+    --pad: clamp(24px, 6vw, 90px);
+    --conv: radial-gradient(120% 90% at 50% 40%, #B3132A 0%, #8C0C1D 50%, #5E0912 100%);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { font-family: 'Ubuntu', system-ui, sans-serif; color: var(--tinta); background: var(--estudio); overflow-x: hidden; }
+  img { display: block; max-width: 100%; }
+
+  /* fundo da abertura: o vermelho da convenção + a parede 3D (canvas de trás) + um véu atrás do título */
+  #fundo { position: fixed; inset: 0; z-index: 0; background: var(--conv); }
+  #fundo canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; }
+  #fundo .veu { position: fixed; inset: 0; z-index: 1;
+                background: radial-gradient(52% 44% at 50% 50%, rgba(80, 6, 14, .82) 0%, rgba(80, 6, 14, .5) 50%, rgba(80, 6, 14, .12) 100%); }
+  #frente { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 30; pointer-events: none; }
+  main { position: relative; z-index: 10; }
+  section { position: relative; padding: 0 var(--pad); }
+  .bloco { max-width: 1080px; margin: 0 auto; }
+  p, h2 { text-wrap: pretty; }
+
+  /* navegação (logo 44 px e texto 14 px: regra do site da Babi) */
+  #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 40; display: flex; align-items: center; gap: 16px;
+         padding: 14px var(--pad); transition: background .4s, box-shadow .4s; }
+  #nav img { height: 44px; width: auto; }
+  #nav .t { font-weight: 500; font-size: 14px; letter-spacing: .02em; color: #fff; white-space: nowrap; transition: color .4s; }
+  #nav .clean { display: none; }
+  /* chave do selo (19/10, ele: "uma segunda opção no site, onde a gente possa mudar o selo... coloque ali em cima") */
+  .chave { margin-left: auto; display: flex; border: 1px solid rgba(255, 255, 255, .45); border-radius: 999px; padding: 3px; gap: 2px; }
+  .chave button { font: 500 13px/1 'Ubuntu', sans-serif; color: #fff; background: none; border: 0; border-radius: 999px;
+                  padding: 9px 14px; min-height: 36px; cursor: pointer; white-space: nowrap; letter-spacing: .02em; }
+  .chave button.on { background: #fff; color: var(--tinta); }
+  #nav.claro .chave { border-color: rgba(91, 91, 91, .3); } #nav.claro .chave button { color: var(--tinta); }
+  #nav.claro .chave button.on { background: var(--tinta); color: #fff; }
+  /* selo B · Ao lado (caminho 1, 19/10): mesmo símbolo do A, ao lado do nome; montado pelo SELO (medido na tinta) */
+  .selo.modoB > .wb, .selo.modoB > .pecas { position: absolute; }
+  .selo.modoB > .pecas { inset: 0; } .selo.modoB .pecas img { max-width: none; }
+  .selo.modoB .wb, .selo.modoB .wb > div { line-height: 1; white-space: nowrap; margin: 0; padding: 0; }
+  #nav.claro { background: rgba(233, 233, 233, .88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 1px 0 rgba(91,91,91,.08); }
+  #nav.claro .t { color: var(--tinta); } #nav.claro .rev { display: none; } #nav.claro .clean { display: block; }
+
+  /* selo (mesma regra do selo_A.js aprovado) */
+  .selo { position: relative; display: inline-block; }
+  .selo .letter { display: table; text-align: left; }
+  .selo .e { font-weight: 400; font-size: calc(var(--s) * .40); line-height: 1; }
+  .selo .a { font-weight: 700; font-size: var(--s); line-height: .86; letter-spacing: -.04em; margin-left: -.05em; }
+  .selo .b { font-weight: 400; font-size: var(--s); line-height: .86; letter-spacing: -.035em; text-align: left; margin-left: -.027em; }   /* C sob o L e o l sob o a (medido) */
+  .selo .b .ki { margin-left: -.03em; margin-right: .03em; }   /* o pingo do i longe do cedilha do ç (medido: folga 4% do corpo) */
+  .selo.branco { color: #fff; }
+  .selo.claro .e { color: var(--leve); } .selo.claro .a { color: var(--vermelho); } .selo.claro .b { color: var(--tinta); }
+  .selo.um { color: var(--vermelho); }
+  .selo .pecas img { position: absolute; display: block; }
+  html.gl .selo.tresd .pecas img { visibility: hidden; }
+  /* máscara das linhas do título (folga para o "ç" e o "L" não cortarem) */
+  .selo .mk { display: block; }   /* sem máscara: a máscara cortava letra e sombra ao carregar ("letras bugadas", 17/10) */
+
+  /* 1. abertura */
+  #abertura { min-height: min(100svh, 980px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(24px, 2.6vw, 40px);
+              color: #fff; text-align: center; padding-top: 100px; padding-bottom: 100px; }
+  .rotulo { font-weight: 500; font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--vermelho); }
+  #abertura .rotulo { color: #fff; }
+  #abertura .quando { font-weight: 300; font-size: clamp(16px, 2.2vw, 26px); }
+  /* leitura resolvida no TEXTO, não no fundo (ele, 17/10: gostou da parede; reprovou afundar/escurecer, desfocar e o vidro):
+     linhas leves em Regular (não Light) e uma sombra suave colada nas letras */
+  #abertura .selo.tela .e, #abertura .selo.tela .b, #abertura .quando { font-weight: 400; }
+  #abertura .rotulo, #abertura .selo, #abertura .quando { text-shadow: 0 0 2px rgba(60, 4, 12, .55), 0 2px 10px rgba(60, 4, 12, .6), 0 4px 36px rgba(60, 4, 12, .5); }
+  html.fundo-a #abertura { justify-content: flex-start; padding-top: clamp(96px, 13vh, 130px); }
+  /* o título num cartão de vidro (o vidro do DS, como no convite aprovado): a parede da 1ª versão segue se mexendo atrás
+     — retorno dele, 17/10: "esse fundo que se mexe ficou muito legal, mas oculta os escritos" */
+  #vidro { display: flex; flex-direction: column; align-items: center; gap: clamp(24px, 2.6vw, 40px); }   /* rótulo, selo e data com o mesmo vão */
+  .vidro { gap: clamp(22px, 2.4vw, 36px);
+           padding: clamp(34px, 5vw, 60px) clamp(26px, 5.5vw, 80px); border-radius: clamp(28px, 3vw, 40px);
+           background: rgba(94, 9, 18, .3); border: 1px solid rgba(255, 255, 255, .16);
+           -webkit-backdrop-filter: blur(9px) saturate(1.05); backdrop-filter: blur(9px) saturate(1.05);   /* mais leve (ele, 17/10) */
+           box-shadow: 0 24px 60px rgba(40, 0, 8, .22), inset 0 1px 0 rgba(255, 255, 255, .14); }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .vidro { background: rgba(94, 9, 18, .86); } }
+  .desce { position: absolute; left: 0; right: 0; bottom: 26px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+           color: rgba(255,255,255,.75); display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .desce i { width: 1px; height: 38px; background: linear-gradient(#fff, transparent); animation: desce 1.8s ease-in-out infinite; }
+  @keyframes desce { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+  /* seções claras */
+  .claro-sec { background: var(--estudio); }
+  h2 { font-size: clamp(44px, 8vw, 104px); line-height: 1; letter-spacing: -.02em; margin-top: 18px; }
+  h2 .l { font-weight: 300; } h2 .f { font-weight: 700; color: var(--vermelho); }
+  .txt { font-size: clamp(18px, 2.1vw, 26px); line-height: 1.45; color: var(--corpo); max-width: 640px; margin-top: 22px; }
+
+  /* 2. ascensão */
+  #ascensao { padding-top: clamp(80px, 9vw, 130px); padding-bottom: clamp(64px, 7vw, 100px); }
+  .barras { position: relative; display: flex; align-items: flex-end; justify-content: center; gap: calc(var(--w) * .12);
+            --w: clamp(110px, 24vw, 260px); margin-top: clamp(48px, 6vw, 90px); }
+  .barra { position: relative; width: calc(var(--w) * var(--k)); height: calc(var(--w) * var(--k) * 405 / 321); cursor: pointer;
+           -webkit-tap-highlight-color: transparent; background: none; border: 0; padding: 0; font: inherit; }
+  html:not(.gl) .barra { background: center / contain no-repeat; }
+  html:not(.gl) .barra[data-i="0"] { background-image: url('assets/peca-vinho.png'); }
+  html:not(.gl) .barra[data-i="1"] { background-image: url('assets/peca-carmim.png'); }
+  html:not(.gl) .barra[data-i="2"] { background-image: url('assets/peca-vermelha.png'); }
+  .barra b { position: absolute; left: 50%; top: calc(100% + 16px); transform: translateX(-50%); white-space: nowrap;
+             font-weight: 700; font-size: clamp(15px, 1.8vw, 20px); color: var(--tinta); opacity: 0; transition: opacity .35s, top .35s; }
+  .barra.aberta b { opacity: 1; top: calc(100% + 12px); }
+  .barra.aberta[data-i="2"] b { color: var(--vermelho); }
+  .legenda { text-align: center; margin-top: 64px; min-height: 52px; }
+  .legenda .dica { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--leve); }
+  .legenda .diz { font-size: clamp(17px, 2vw, 22px); color: var(--corpo); }
+
+  /* 3. a forma */
+  #forma { padding-top: clamp(24px, 3vw, 48px); padding-bottom: clamp(80px, 9vw, 130px); }
+  .forma-vis { display: flex; align-items: flex-end; gap: clamp(20px, 5vw, 60px); margin-top: 56px; flex-wrap: wrap; }
+  .forma-vis svg { width: clamp(150px, 30vw, 300px); height: auto; overflow: visible; }
+  .seta { font-weight: 300; font-size: 48px; color: var(--leve); align-self: center; }
+  .trio { display: flex; align-items: flex-end; gap: 16px; }
+  .trio figure { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .trio img { width: calc(clamp(62px, 11vw, 120px) * var(--k)); height: auto; }
+  .trio figcaption { font-weight: 500; font-size: 15px; color: var(--leve); }
+
+  /* 4. o encaixe */
+  #encaixe { padding-top: 0; padding-bottom: clamp(64px, 7vw, 100px); }
+  .cartao { background: #fff; border-radius: 28px; box-shadow: 0 10px 30px rgba(91,91,91,.10); margin-top: 48px; display: flex;
+            align-items: center; justify-content: center; padding: clamp(60px, 10vw, 120px) 24px; position: relative; overflow: hidden; }
+  .cartao svg.guias { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .cartao svg.guias line { stroke: var(--vermelho); stroke-width: 2; opacity: .6; }
+
+  /* 5. versões */
+  #versoes { padding-top: clamp(72px, 8vw, 120px); padding-bottom: clamp(48px, 5vw, 72px); }
+  .grade4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 44px; perspective: 1200px; }
+  .grade4 .c { border-radius: 24px; min-height: clamp(170px, 26vw, 300px); display: flex; align-items: center; justify-content: center;
+               position: relative; background: #fff; box-shadow: 0 8px 24px rgba(91,91,91,.10); overflow: hidden; padding: 44px 20px 30px; }
+  .grade4 .c.conv { background: var(--conv); }
+  .grade4 .et { position: absolute; left: 18px; top: 16px; font-weight: 500; font-size: 13px; color: var(--leve); letter-spacing: .04em; }
+  .grade4 .conv .et { color: rgba(255,255,255,.8); }
+
+  /* 6. estampa */
+  #estampa { padding: clamp(80px, 9vw, 130px) 0 clamp(40px, 4vw, 60px); background: var(--estudio); overflow: hidden; }
+  .faixa { height: clamp(150px, 22vw, 260px); background: url('assets/estampa.webp') repeat-x; background-size: 420px auto; }
+  .faixa.a { animation: corre 30s linear infinite; background-position-y: 0; }
+  .faixa.b { animation: corre 36s linear infinite reverse; background-position-y: 100%; margin-top: 10px; }
+  @keyframes corre { from { background-position-x: 0; } to { background-position-x: -420px; } }
+  #estampa .bloco { padding: 0 var(--pad); }
+
+  /* 7. cores (amostras do mesmo tamanho, sobem no mouse ou no toque) */
+  #cores { padding-top: clamp(32px, 4vw, 56px); padding-bottom: clamp(80px, 9vw, 130px); }
+  .amostras { display: grid; grid-template-columns: repeat(7, 1fr); gap: 14px; margin-top: 40px; }
+  .am { border-radius: 22px; aspect-ratio: 1; display: flex; align-items: flex-end; padding: 14px; font-weight: 500; font-size: 13px;
+        transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s; box-shadow: 0 6px 18px rgba(91,91,91,.08); }
+  .am:hover, .am.sobe { transform: translateY(-14px); box-shadow: 0 18px 30px rgba(91,91,91,.18); }
+  .am.borda { box-shadow: inset 0 0 0 1px rgba(91,91,91,.2), 0 6px 18px rgba(91,91,91,.08); }
+
+  /* 8. frase */
+  #frase { min-height: min(80svh, 760px); display: flex; align-items: center; justify-content: center; text-align: center; color: #fff;
+           background: var(--conv); padding-top: 120px; padding-bottom: 120px; }
+  #frase .l1 { display: block; font-weight: 300; font-size: clamp(36px, 7vw, 96px); line-height: 1.05; }
+  #frase .l2 { display: block; font-weight: 700; font-size: clamp(46px, 9.4vw, 128px); line-height: 1.05; letter-spacing: -.02em; }
+  #frase .w { display: inline-block; }
+
+  /* 9. aplicações */
+  #aplicacoes { padding-top: clamp(80px, 9vw, 140px); padding-bottom: clamp(48px, 5vw, 80px); }
+  .fotos { display: grid; gap: clamp(18px, 3vw, 28px); margin-top: 48px; grid-template-columns: 1fr 1fr; }
+  .foto { border-radius: 24px; overflow: hidden; position: relative; background: #ccc; }
+  .foto img { width: 100%; height: 118%; object-fit: cover; position: absolute; top: -9%; left: 0; }
+  .foto.larga { grid-column: 1 / 3; aspect-ratio: 12 / 5; }
+  .foto.alta { aspect-ratio: 4 / 5; } .foto.media { aspect-ratio: 1 / 1; }
+  .fotos-nav { display: none; }
+  .foto figcaption { position: absolute; left: 16px; bottom: 16px; background: #fff; color: var(--tinta); border-radius: 999px;
+                     padding: 10px 18px; font-weight: 500; font-size: 14px; box-shadow: 0 8px 20px rgba(0,0,0,.15); }
+
+  /* 10. fim */
+  #fim { min-height: min(92svh, 820px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 56px; color: #fff;
+         background: var(--conv); text-align: center; padding-top: 110px; padding-bottom: 70px; }
+  .logos { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .logo-box { background: #fff; border-radius: 14px; height: 74px; width: 200px; display: flex; align-items: center; justify-content: center; }
+  .logo-box img { height: 40px; width: auto; }
+  #fim small { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+
+  @media (max-width: 640px) {
+    #nav .t { display: none; }
+    .chave button span { display: none; } .chave button { padding: 0 16px; min-height: 44px; }   /* alvo de dedo: 44 px */
+    #fim small span { display: block; } #fim small .ponto { display: none; }   /* sem viúva no rodapé */
+    #abertura .quando span { display: block; } #abertura .quando .ponto { display: none; }
+    .grade4 { grid-template-columns: 1fr; }
+    /* fotos: no celular viram um carrossel de deslizar (empilhadas davam 3.200 px de rolagem) */
+    .fotos { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; scrollbar-width: none;
+             margin-left: calc(-1 * var(--pad)); margin-right: calc(-1 * var(--pad)); padding: 0 var(--pad) 4px; scroll-padding: 0 var(--pad); }
+    .fotos::-webkit-scrollbar { display: none; }
+    .foto, .foto.larga, .foto.alta { flex: 0 0 84%; aspect-ratio: 4 / 5; scroll-snap-align: start; }
+    .foto.larga img { object-position: 24% 50%; }   /* telão: o selo e os logos ficam no recorte em pé */
+    .fotos-nav { display: flex; align-items: center; gap: 14px; margin-top: 18px; font-size: 13px; color: var(--leve); }
+    .fotos-nav .barra-f { flex: 1; height: 3px; border-radius: 3px; background: rgba(91, 91, 91, .16); overflow: hidden; }
+    .fotos-nav .barra-f i { display: block; height: 100%; width: 14%; border-radius: 3px; background: var(--vermelho); transition: width .25s; }
+    .fotos-nav b { color: var(--tinta); font-weight: 500; }
+    .forma-vis { flex-direction: column; align-items: center; } .forma-vis svg { width: 52vw; } .seta { transform: rotate(90deg); }
+    .amostras { grid-template-columns: 1fr; gap: 10px; } .am { aspect-ratio: auto; height: 64px; align-items: center; padding: 0 20px; border-radius: 18px; }
+    .am:hover, .am.sobe { transform: translateX(10px); }
+  }
+  @media (prefers-reduced-motion: reduce) { .faixa.a, .faixa.b, .desce i { animation: none; } }
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="fundo"><div class="veu"></div></div>
+<canvas id="frente" aria-hidden="true"></canvas>
+
+<nav id="nav">
+  <img class="rev" src="assets/credfranco-logo-reversed.svg" alt="CREDFRANCO">
+  <img class="clean" src="assets/credfranco-logo-clean.svg" alt="CREDFRANCO">
+  <span class="t">Encontro de Liderança Comercial</span>
+  <div class="chave" role="group" aria-label="Versão do selo">
+    <button type="button" data-selo="a" class="on">Selo A<span> · Ascensão</span></button>
+    <button type="button" data-selo="b">Selo B<span> · Ao lado</span></button>
+  </div>
+</nav>
+
+<main>
+  <!-- 1 -->
+  <section id="abertura">
+    <div class="vidro" id="vidro">
+    <div class="rotulo revela">Proposta de identidade visual</div>
+    <div class="selo principal branco tela tresd" id="selo-abertura" data-cores="rosa,rosa-claro,branca" style="--s:clamp(54px, 16vw, 140px)">
+      <div class="pecas"></div>
+      <div class="letter">
+        <span class="mk"><div class="e">Encontro de</div></span>
+        <span class="mk"><div class="a">Liderança</div></span>
+        <span class="mk"><div class="b">Comercial</div></span>
+      </div>
+    </div>
+    <div class="quando revela"><span>10 de novembro de 2026</span><span class="ponto"> · </span><span>Belo Horizonte/MG</span></div>
+    </div>
+    <div class="desce revela"><span>Role</span><i></i></div>
+  </section>
+
+  <!-- 2 -->
+  <section id="ascensao" class="claro-sec">
+    <div class="bloco">
+      <div class="rotulo">O conceito</div>
+      <h2><span class="f">Ascensão</span></h2>
+      <p class="txt">Liderança é o que faz o resultado subir. O selo mostra isso: três peças que crescem, como um gráfico, e chegam ao vermelho mais forte no topo.</p>
+      <div class="barras" id="barras">
+        <button class="barra" style="--k:.62" data-i="0" data-diz="Os regionais de todo o Brasil, juntos." aria-label="Encontro"><b>Encontro</b></button>
+        <button class="barra" style="--k:.81" data-i="1" data-diz="Quem puxa o time para cima." aria-label="Liderança"><b>Liderança</b></button>
+        <button class="barra" style="--k:1" data-i="2" data-diz="Onde o encontro quer chegar." aria-label="Resultado"><b>Resultado</b></button>
+      </div>
+      <div class="legenda" id="legenda"><div class="dica">Toque nas peças</div></div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="forma" class="claro-sec">
+    <div class="bloco">
+      <div class="rotulo">A forma</div>
+      <h2><span class="l">Nasce do</span><br><span class="f">grafismo da marca</span></h2>
+      <p class="txt">Cada peça é o squircle, o grafismo da CREDFRANCO. A mesma forma, em três tamanhos.</p>
+      <div class="forma-vis">
+        <svg id="grade-forma" aria-hidden="true"></svg>
+        <div class="seta">→</div>
+        <div class="trio">
+          <figure style="--k:.62"><img src="assets/peca-vinho.png" alt=""><figcaption>62%</figcaption></figure>
+          <figure style="--k:.81"><img src="assets/peca-carmim.png" alt=""><figcaption>81%</figcaption></figure>
+          <figure style="--k:1"><img src="assets/peca-vermelha.png" alt=""><figcaption>100%</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="encaixe" class="claro-sec">
+    <div class="bloco">
+      <div class="rotulo">O encaixe</div>
+      <h2><span class="l">Um bloco</span> <span class="f">só</span></h2>
+      <p class="txt" id="txt-encaixe" data-a="As peças apoiam na linha de “Encontro de” e ocupam a largura de “Liderança”. Sem espaço vazio em volta." data-b="O símbolo fica ao lado do nome e tem a altura dele: do topo de “Encontro de” à base de “Comercial”.">As peças apoiam na linha de “Encontro de” e ocupam a largura de “Liderança”. Sem espaço vazio em volta.</p>
+      <div class="cartao" id="cartao-encaixe">
+        <div class="selo principal claro" id="selo-encaixe" data-cores="vinho,carmim,vermelha" style="--s:clamp(48px, 10vw, 120px)">
+          <div class="pecas"></div>
+          <div class="letter"><div class="e">Encontro de</div><div class="a">Liderança</div><div class="b">Comercial</div></div>
+        </div>
+        <svg class="guias" id="guias"></svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="versoes" class="claro-sec">
+    <div class="bloco">
+      <div class="rotulo">As versões</div>
+      <h2><span class="l">Em qualquer</span> <span class="f">peça</span></h2>
+      <div class="grade4">
+        <div class="c"><div class="et">Principal</div>
+          <div class="selo principal claro" data-cores="vinho,carmim,vermelha" style="--s:clamp(36px, 6vw, 70px)"><div class="pecas"></div>
+            <div class="letter"><div class="e">Encontro de</div><div class="a">Liderança</div><div class="b">Comercial</div></div></div></div>
+        <div class="c conv"><div class="et">Negativo</div>
+          <div class="selo principal branco" data-cores="rosa,rosa-claro,branca" style="--s:clamp(36px, 6vw, 70px)"><div class="pecas"></div>
+            <div class="letter"><div class="e">Encontro de</div><div class="a">Liderança</div><div class="b">Comercial</div></div></div></div>
+        <div class="c"><div class="et">Horizontal</div>
+          <div class="selo horizontal claro" data-cores="vinho,carmim,vermelha" style="--s:clamp(22px, 3.4vw, 40px)"><div class="pecas"></div>
+            <div class="letter"><div class="e">Encontro de</div><div class="a">Liderança</div><div class="b">Comercial</div></div></div></div>
+        <div class="c"><div class="et">Uma cor</div>
+          <div class="selo principal um" data-cores="vermelha,vermelha,vermelha" style="--s:clamp(36px, 6vw, 70px)"><div class="pecas"></div>
+            <div class="letter"><div class="e">Encontro de</div><div class="a">Liderança</div><div class="b">Comercial</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section id="estampa">
+    <div class="faixa a"></div><div class="faixa b"></div>
+    <div class="bloco">
+      <div class="rotulo" style="margin-top:56px">A estampa</div>
+      <p class="txt">As formas do grafismo, cada uma num tom da convenção. Ela abre o painel, o telão, o bloquinho e o copo.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="cores" class="claro-sec">
+    <div class="bloco">
+      <div class="rotulo">As cores</div>
+      <div class="amostras">
+        <div class="am" style="background:#5E0912;color:#fff">#5E0912</div>
+        <div class="am" style="background:#8C0C1D;color:#fff">#8C0C1D</div>
+        <div class="am" style="background:#C21A30;color:#fff">#C21A30</div>
+        <div class="am" style="background:#EF3D48;color:#fff">#EF3D48</div>
+        <div class="am" style="background:#F6C9CD;color:#5B5B5B">#F6C9CD</div>
+        <div class="am" style="background:#5B5B5B;color:#fff">#5B5B5B</div>
+        <div class="am borda" style="background:#E9E9E9;color:#5B5B5B">#E9E9E9</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section id="frase">
+    <div>
+      <div class="rotulo" style="color:var(--rosa);margin-bottom:40px">A frase do encontro</div>
+      <span class="l1"><span class="w">Liderança</span> <span class="w">que</span> <span class="w">move</span></span>
+      <span class="l2"><span class="w">bons</span> <span class="w">resultados</span></span>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section id="aplicacoes" class="claro-sec">
+    <div class="bloco">
+      <div class="rotulo">Na prática</div>
+      <h2><span class="l">O encontro</span> <span class="f">inteiro</span></h2>
+      <div class="fotos">
+        <figure class="foto larga"><img src="assets/aplic-telao.webp?v=19" alt="Telão do auditório com o selo" loading="lazy"><figcaption>Telão do auditório</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-painel.webp?v=19" alt="Painel para fotos" loading="lazy"><figcaption>Painel para fotos</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-agenda.webp?v=19" alt="Bloquinho e caneta" loading="lazy"><figcaption>Bloquinho e caneta</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-copo-1.webp?v=19" alt="Copo branco no coffee break" loading="lazy"><figcaption>Copo branco</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-copo-2.webp?v=19" alt="Copo vermelho na mão" loading="lazy"><figcaption>Copo vermelho</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-camiseta-1.webp?v=19" alt="Camiseta branca no cabide" loading="lazy"><figcaption>Camiseta branca</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-camiseta-2.webp?v=19" alt="Camiseta vermelha dobrada" loading="lazy"><figcaption>Camiseta vermelha</figcaption></figure>
+      </div>
+      <div class="fotos-nav" aria-hidden="true"><span>Deslize para o lado</span><span class="barra-f"><i></i></span><span><b id="foto-n">1</b> de 7</span></div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section id="fim">
+    <div class="selo principal branco tela" data-cores="rosa,rosa-claro,branca" style="--s:clamp(52px, 10vw, 120px)"><div class="pecas"></div>
+      <div class="letter"><div class="e">Encontro de</div><div class="a">Liderança</div><div class="b">Comercial</div></div></div>
+    <div class="logos">
+      <div class="logo-box"><img src="assets/credfranco-logo-clean.svg" alt="CREDFRANCO"></div>
+      <div class="logo-box"><img src="assets/cf-promotora-logo.png" alt="CF Promotora"></div>
+    </div>
+    <small><span>Proposta de identidade visual</span><span class="ponto"> · </span><span>outubro de 2026</span></small>
+  </section>
+</main>
+
+<script src="assets/formas.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* ======== parte em HTML (funciona mesmo sem o 3D) ======== */
+if (window.gsap) gsap.ticker.lagSmoothing(0);   // entrada presa ao relógio: em aparelho lento pula quadros, não atrasa
+const REDUZ = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const F1 = FORMAS.formas.find(f => f.linha === 0 && f.col === 0);   // a forma do selo (cantos redondos em cima à direita e embaixo à esquerda)
+// estado que o 3D lê
+window.E = { forma: REDUZ ? 1 : 0, viagem: 0, giro: 0, girou: false, tx: 0, ty: 0, pulso: [{ v: 0 }, { v: 0 }, { v: 0 }] };
+
+/* selo: a mesma conta do selo_A.js aprovado */
+window.SELO = (function () {
+  const K = [0.62, 0.81, 1.0], G = 0.12, RAZAO = 405 / 321;
+  const tr = el => { const r = document.createRange(); r.selectNodeContents(el); return r.getBoundingClientRect(); };
+  const base = el => { const cs = getComputedStyle(el), f = parseFloat(cs.fontSize);
+    return el.getBoundingClientRect().top + (parseFloat(cs.lineHeight) - 1.121 * f) / 2 + 0.932 * f; };
+  function pecas(selo, w) {
+    const cores = selo.dataset.cores.split(','), box = selo.querySelector('.pecas'); box.innerHTML = '';
+    return K.map((k, i) => { const im = document.createElement('img'); im.src = `assets/peca-${cores[i]}.png`; im.alt = '';
+      im.style.width = (k * w) + 'px'; im.style.height = (k * w * RAZAO) + 'px'; box.appendChild(im); return im; });
+  }
+  function montar(selo) {
+    const bq = selo.querySelector('.b'); if (!bq.querySelector('.ki')) bq.innerHTML = bq.textContent.replace('Comercial', 'Comerc<span class="ki">i</span>al');
+    selo.style.paddingTop = ''; selo.style.paddingLeft = '';
+    const S = parseFloat(getComputedStyle(selo.querySelector('.a')).fontSize);
+    const e = selo.querySelector('.e'), a = selo.querySelector('.a'), b = selo.querySelector('.b');
+    const soma = K.reduce((s, k) => s + k, 0) + 2 * G;
+    if (selo.classList.contains('principal')) {
+      const w = (tr(a).right - (tr(e).right + 0.12 * S)) / soma;
+      selo.style.paddingTop = Math.max(0, w * RAZAO - (base(e) - e.getBoundingClientRect().top)) + 'px';
+      const ims = pecas(selo, w), sr = selo.getBoundingClientRect(), y = base(e) - sr.top;
+      let x = tr(e).right + 0.12 * S - sr.left;
+      ims.forEach((im, i) => { im.style.left = x + 'px'; im.style.top = (y - K[i] * w * RAZAO) + 'px'; x += (K[i] + G) * w; });
+    } else {
+      const fe = parseFloat(getComputedStyle(e).fontSize);
+      const h = base(b) - (base(e) - 0.693 * fe), w = h / RAZAO;
+      selo.style.paddingLeft = (soma * w + 0.22 * S) + 'px';
+      const ims = pecas(selo, w), sr = selo.getBoundingClientRect(), y = base(b) - sr.top;
+      let x = 0;
+      ims.forEach((im, i) => { im.style.left = x + 'px'; im.style.top = (y - K[i] * w * RAZAO) + 'px'; x += (K[i] + G) * w; });
+    }
+  }
+  // ---- selo B · Ao lado (19/10, PROPOSTA; caminho 1, escolhido por ele; o mesmo do 01 Fontes/selo_B2.js, ref. conference
+  // 2025): o símbolo do A à esquerda, da altura do bloco (a peça maior vai do topo do E à base de "Comercial"), e o nome em
+  // 3 linhas no mesmo corpo à direita. Entrelinha 1,02: o "ç" de "Liderança" fica em cima do "i" de "Comercial" (folga ~9%).
+  // O B anterior (· Conexão, com frase e etiqueta 2026) foi reprovado: "ficou muito complexo... nos produtos vai ficar estranho".
+  const BASE = 0.8715, cv = document.createElement('canvas').getContext('2d');
+  const semLS = !('letterSpacing' in cv);   // Safari sem letterSpacing no canvas: soma o espacejamento na mão
+  const tinta = (txt, peso, fs, ls) => { cv.font = `${peso} ${fs}px Ubuntu`; if (!semLS) cv.letterSpacing = (ls * fs) + 'px';
+    const m = cv.measureText(txt); return { l: -m.actualBoundingBoxLeft, r: m.actualBoundingBoxRight + (semLS ? ls * fs * (txt.length - 1) : 0), up: m.actualBoundingBoxAscent, dn: m.actualBoundingBoxDescent }; };
+  function planoB(S) {
+    const itens = [], caixas = [], P = 1.02;
+    const texto = (txt, peso, fs, ls, cls, x, y) => { const t = tinta(txt, peso, fs, ls);
+      itens.push({ tipo: 'txt', txt, peso, fs, ls, cls, l: x - t.l, t: y - BASE * fs });
+      const c = { x0: x, x1: x + t.r - t.l, y0: y - t.up, y1: y + t.dn }; caixas.push(c); return c; };
+    const base = 2 * P * S, w = (base + tinta('E', 400, S, 0).up) / RAZAO;
+    let x = 0;
+    K.forEach((k, i) => { const h = k * w * RAZAO; itens.push({ tipo: 'peca', i, l: x, t: base - h, w: k * w });
+      caixas.push({ x0: x, x1: x + k * w, y0: base - h, y1: base }); x += (k + G) * w; });
+    const xt = x - G * w + 0.34 * S;
+    texto('Encontro de', 400, S, -0.02, 'e', xt, 0);
+    texto('Liderança', 700, S, -0.04, 'a', xt, P * S);
+    texto('Comercial', 400, S, -0.035, 'b', xt, base);
+    const bx0 = Math.min(...caixas.map(c => c.x0)), by0 = Math.min(...caixas.map(c => c.y0));
+    const bx1 = Math.max(...caixas.map(c => c.x1)), by1 = Math.max(...caixas.map(c => c.y1));
+    return { itens, bx0, by0, W: bx1 - bx0, H: by1 - by0 };
+  }
+  function montarB(selo) {
+    if (!selo.dataset.htmlA) selo.dataset.htmlA = selo.innerHTML;
+    const reduzida = selo.classList.contains('horizontal'), cores = selo.dataset.cores.split(',');
+    selo.classList.add('modoB'); selo.style.paddingTop = ''; selo.style.paddingLeft = '';
+    const sonda = document.createElement('div'); sonda.style.fontSize = 'var(--s)'; selo.appendChild(sonda);
+    const Sa = parseFloat(getComputedStyle(sonda).fontSize); sonda.remove();
+    const pai = selo.closest('.c, .cartao, section'), cs = getComputedStyle(pai);   // o #vidro encolhe no conteúdo: mede a seção
+    const livre = pai.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const p100 = planoB(100);
+    const S = Math.min(Sa * (reduzida ? 0.8 : 0.55), 100 * livre * 0.96 / p100.W);   // o nome lado a lado pede corpo menor que o A
+    const pl = planoB(S), mascara = selo.classList.contains('tresd');
+    selo.innerHTML = '<div class="pecas"></div>';
+    const box = selo.firstChild;
+    pl.itens.forEach(it => {
+      const l = (it.l - pl.bx0) + 'px', t = (it.t - pl.by0) + 'px';
+      if (it.tipo === 'peca') { const im = document.createElement('img'); im.src = `assets/peca-${cores[it.i]}.png`; im.alt = '';
+        Object.assign(im.style, { left: l, top: t, width: it.w + 'px', height: it.w * RAZAO + 'px' }); box.appendChild(im); }
+      else { const w = document.createElement('span'); w.className = 'wb' + (mascara ? ' mk' : '');
+        const d = document.createElement('div'); d.className = it.cls; d.textContent = it.txt;
+        Object.assign(d.style, { fontWeight: it.peso, fontSize: it.fs + 'px', letterSpacing: it.ls + 'em' });
+        Object.assign(w.style, { left: l, top: t }); w.appendChild(d); selo.appendChild(w); }
+    });
+    selo.style.width = pl.W + 'px'; selo.style.height = pl.H + 'px';
+  }
+  let modo = 'a';
+  try { modo = (new URLSearchParams(location.search).get('selo') || localStorage.getItem('seloEncontro') || 'a').toLowerCase(); } catch (e) {}
+  if (modo !== 'b') modo = 'a';
+  function montarUm(selo) {
+    if (modo === 'b') return montarB(selo);
+    if (selo.dataset.htmlA && selo.classList.contains('modoB')) { selo.innerHTML = selo.dataset.htmlA; selo.classList.remove('modoB'); selo.style.width = ''; selo.style.height = ''; }
+    montar(selo);
+  }
+  return { montarTodos: () => document.querySelectorAll('.selo').forEach(montarUm),
+           modo: () => modo, mudar: m => { modo = m; try { localStorage.setItem('seloEncontro', m); } catch (e) {} } };
+})();
+
+/* a chave de cima: troca o selo do site inteiro (as peças 3D remontam no desenho novo) */
+function marcarChave() { document.querySelectorAll('.chave button').forEach(b => b.classList.toggle('on', b.dataset.selo === SELO.modo())); }
+marcarChave();
+/* as fotos da seção "Na prática" trocam junto: aplic-*-b.webp = as mesmas fotos com o Selo B colado (ele, 19/10:
+   "você tem que mudar os mockups também") */
+function trocarFotos() { document.querySelectorAll('.fotos img').forEach(im => { if (!im.dataset.a) im.dataset.a = im.getAttribute('src');
+  const s = SELO.modo() === 'b' ? im.dataset.a.replace('.webp', '-b.webp') : im.dataset.a; if (im.getAttribute('src') !== s) im.setAttribute('src', s); }); }
+trocarFotos();
+/* carrossel do celular: barra e número da foto */
+(function () { const f = document.querySelector('.fotos'), n = document.getElementById('foto-n'), bar = document.querySelector('.fotos-nav i');
+  const conta = () => { const max = f.scrollWidth - f.clientWidth; if (max <= 0) return; const k = f.scrollLeft / max;
+    n.textContent = Math.round(k * 6) + 1; bar.style.width = (14 + k * 86) + '%'; };
+  f.addEventListener('scroll', conta, { passive: true }); })();
+document.querySelectorAll('.chave button').forEach(b => b.addEventListener('click', () => {
+  if (b.dataset.selo === SELO.modo()) return;
+  SELO.mudar(b.dataset.selo); marcarChave(); trocarFotos();
+  SELO.montarTodos(); desenharGuias();
+  if (window.ScrollTrigger) ScrollTrigger.refresh();
+  dispatchEvent(new Event('relayout'));
+  if (window.gsap && !REDUZ) {
+    if (scrollY < innerHeight * 0.6) gsap.fromTo(E, { forma: 0.42 }, { forma: 1, duration: 1.5, ease: 'power2.out' });
+    gsap.fromTo('#selo-abertura .mk > div', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'power2.out', delay: 0.35 });
+  }
+}));
+
+/* a grade da estampa com os contornos reais (a forma do selo em vermelho) */
+function desenharGrade() {
+  const svg = document.getElementById('grade-forma');
+  svg.setAttribute('viewBox', `0 0 ${FORMAS.tile[0]} ${FORMAS.tile[1]}`);
+  svg.innerHTML = FORMAS.formas.map(f => {
+    const d = 'M' + f.pts.map(p => (p[0] + f.x) + ' ' + (p[1] + f.y)).join('L') + 'Z';
+    return f === F1 ? `<path class="destaque" d="${d}" fill="#EF3D48"/>` : `<path class="cinza" d="${d}" fill="#D6D6D6"/>`;
+  }).join('');
+}
+/* guias do encaixe: A = a linha de base e as duas bordas de "Liderança"; B = o topo e a base, iguais no símbolo e no nome */
+function desenharGuias() {
+  const tx = document.getElementById('txt-encaixe'), qual = SELO.modo() === 'b' ? tx.dataset.b : tx.dataset.a;
+  if (tx.dataset.qual !== qual) { tx.dataset.qual = qual; tx.textContent = qual; delete tx.dataset.sv; semViuva(tx); }
+  const c = document.getElementById('cartao-encaixe'), svg = document.getElementById('guias');
+  const selo = document.getElementById('selo-encaixe'), cr = c.getBoundingClientRect();
+  const ims = selo.querySelectorAll('.pecas img'); if (ims.length < 3) return;
+  const r0 = ims[0].getBoundingClientRect(), r2 = ims[2].getBoundingClientRect();
+  const rg = document.createRange(); rg.selectNodeContents(selo.querySelector('.a')); const ar = rg.getBoundingClientRect();
+  const re = document.createRange(); re.selectNodeContents(selo.querySelector('.e')); const er = re.getBoundingClientRect();
+  const X = v => v - cr.left, Y = v => v - cr.top;
+  svg.setAttribute('viewBox', `0 0 ${cr.width} ${cr.height}`);
+  if (SELO.modo() === 'b') {
+    const rb = document.createRange(); rb.selectNodeContents(selo.querySelector('.b'));
+    const dir = Math.max(er.right, ar.right, rb.getBoundingClientRect().right);
+    svg.innerHTML = `<line x1="${X(r0.left) - 30}" y1="${Y(r2.top)}" x2="${X(dir) + 30}" y2="${Y(r2.top)}"/>
+    <line x1="${X(r0.left) - 30}" y1="${Y(r2.bottom)}" x2="${X(dir) + 30}" y2="${Y(r2.bottom)}"/>`;
+  } else svg.innerHTML = `<line x1="${X(er.left) - 30}" y1="${Y(r0.bottom)}" x2="${X(r2.right) + 30}" y2="${Y(r0.bottom)}"/>
+    <line x1="${X(ar.left)}" y1="${Y(r2.top) - 26}" x2="${X(ar.left)}" y2="${Y(ar.bottom) + 26}"/>
+    <line x1="${X(ar.right)}" y1="${Y(r2.top) - 26}" x2="${X(ar.right)}" y2="${Y(ar.bottom) + 26}"/>`;
+  svg.querySelectorAll('line').forEach(l => { const n = Math.hypot(l.x2.baseVal.value - l.x1.baseVal.value, l.y2.baseVal.value - l.y1.baseVal.value);
+    l.style.strokeDasharray = n; l.style.strokeDashoffset = c.dataset.visto ? 0 : n; });
+}
+
+/* sem viúva: as três últimas palavras de cada texto ficam juntas na última linha */
+function semViuva(el) { if (el.dataset.sv) return; el.dataset.sv = 1;
+  const p = el.innerHTML.split(' '); if (p.length > 4) el.innerHTML = p.slice(0, -2).join(' ') + '\u00A0' + p.slice(-2).join('\u00A0'); }
+document.querySelectorAll('.txt').forEach(semViuva);
+
+/* barra de cima: clara nas seções claras, vermelha nas escuras */
+const NAV = document.getElementById('nav'), ESCURAS = ['abertura', 'frase', 'fim'].map(id => document.getElementById(id));
+function navCor() { const escuro = ESCURAS.some(el => { const r = el.getBoundingClientRect(); return r.top <= 36 && r.bottom > 36; });
+  NAV.classList.toggle('claro', !escuro); }
+addEventListener('scroll', navCor, { passive: true }); navCor();
+
+/* peças do conceito: o toque mostra o nome embaixo e o sentido na legenda; a peça 3D pula */
+const LEG = document.getElementById('legenda');
+document.querySelectorAll('#barras .barra').forEach(b => b.addEventListener('click', () => {
+  const i = +b.dataset.i; b.classList.add('aberta');
+  LEG.innerHTML = `<div class="diz">${b.dataset.diz}</div>`; semViuva(LEG.firstChild);
+  if (window.gsap) gsap.fromTo(E.pulso[i], { v: 0 }, { v: 1, duration: 1.1, ease: 'power2.out' });
+}));
+document.querySelectorAll('.am').forEach(a => a.addEventListener('touchstart', () => {
+  a.classList.add('sobe'); setTimeout(() => a.classList.remove('sobe'), 700); }, { passive: true }));
+
+/* montagem: depois das fontes (as medidas do selo dependem delas) */
+window.LAYOUT = document.fonts.ready.then(() => {
+  SELO.montarTodos(); desenharGrade(); desenharGuias();
+  if (!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  // a viagem do selo até "Ascensão" (o 3D lê E.viagem) e a volta inteira, sozinha, no começo da rolagem
+  // começa no topo da página (em tela alta "Ascensão" já aparece na 1ª tela: as peças saíam do título sem rolar)
+  // e termina quando "Ascensão" chega no meio da tela, nunca em menos de meia tela de rolagem (tela alta: ele quer ver
+  // as peças girando e descendo junto com a seção)
+  const fimViagem = () => { const asc = document.getElementById('ascensao');
+    return Math.max(asc.offsetTop + asc.offsetHeight / 2 - innerHeight * 0.6, innerHeight * 0.6); };
+  ScrollTrigger.create({ trigger: '#abertura', start: 'top top', end: fimViagem, scrub: true,
+    onUpdate: st => { E.viagem = st.progress;
+      if (st.progress > 0.02 && !E.girou && !REDUZ) { E.girou = true; gsap.fromTo(E, { giro: 0 }, { giro: Math.PI * 2, duration: 1.8, ease: 'power2.inOut' }); }
+      if (st.progress < 0.005) E.girou = false; } });
+  if (REDUZ) return;
+  gsap.utils.toArray('section:not(#abertura):not(#frase) .rotulo, section:not(#abertura) h2, section:not(#abertura) .txt').forEach(el =>
+    gsap.from(el, { y: 36, opacity: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%' } }));
+  gsap.from('#grade-forma .cinza', { opacity: 0, scale: 0.8, transformOrigin: '50% 50%', duration: 0.6, stagger: 0.05,
+    scrollTrigger: { trigger: '#grade-forma', start: 'top 85%' } });
+  gsap.fromTo('#grade-forma .destaque', { y: 0 }, { y: -70, duration: 0.9, ease: 'back.out(2)', scrollTrigger: { trigger: '#grade-forma', start: 'top 62%' } });
+  gsap.from('.trio figure', { y: 50, opacity: 0, duration: 0.8, stagger: 0.14, ease: 'back.out(1.6)', scrollTrigger: { trigger: '.trio', start: 'top 88%' } });
+  ScrollTrigger.create({ trigger: '#cartao-encaixe', start: 'top 72%', once: true, onEnter: () => {
+    document.getElementById('cartao-encaixe').dataset.visto = 1;
+    gsap.to('#guias line', { strokeDashoffset: 0, duration: 1.2, stagger: 0.25, ease: 'power2.inOut' }); } });
+  gsap.from('.grade4 .c', { y: 60, opacity: 0, rotateX: -14, duration: 0.9, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: '.grade4', start: 'top 85%' } });
+  gsap.from('.am', { y: 40, opacity: 0, duration: 0.6, stagger: 0.07, ease: 'back.out(1.8)', scrollTrigger: { trigger: '.amostras', start: 'top 88%' } });
+  gsap.fromTo('#frase .w', { opacity: 0.12, y: 20 }, { opacity: 1, y: 0, stagger: 0.25, ease: 'none',
+    scrollTrigger: { trigger: '#frase', start: 'top 70%', end: 'center 45%', scrub: true } });
+  gsap.utils.toArray('.foto').forEach(f => {
+    gsap.from(f, { y: 70, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: f, start: 'top 92%' } });
+    gsap.fromTo(f.querySelector('img'), { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: f, start: 'top bottom', end: 'bottom top', scrub: true } });
+  });
+  gsap.from('#fim .selo, #fim .logo-box, #fim small', { y: 30, opacity: 0, duration: 0.9, stagger: 0.12, scrollTrigger: { trigger: '#fim', start: 'top 60%' } });
+});
+// no celular a barra do navegador some e volta ao rolar (muda só a altura): isso não remonta a página (dava pulo)
+let espera, largFeita = innerWidth, altFeita = innerHeight; addEventListener('resize', () => {
+  if (innerWidth === largFeita && Math.abs(innerHeight - altFeita) < 160) return; largFeita = innerWidth; altFeita = innerHeight;
+  clearTimeout(espera); espera = setTimeout(() => {
+  SELO.montarTodos(); desenharGuias(); if (window.ScrollTrigger) ScrollTrigger.refresh(); dispatchEvent(new Event('relayout')); }, 120); });
+</script>
+
+<script type="module">
+/* ======== parte 3D: a parede de estampa e as três peças do selo ======== */
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+await window.LAYOUT;
+const COR_ABERTURA = ['#F6C9CD', '#FBE4E6', '#FFFFFF'], COR_CONCEITO = ['#5E0912', '#C21A30', '#EF3D48'];
+
+function palco(canvas, fiel) {
+  const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+  r.setPixelRatio(Math.min(devicePixelRatio, 1.6)); r.outputColorSpace = THREE.SRGBColorSpace;
+  r.toneMapping = fiel ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.1;
+  const cena = new THREE.Scene();
+  cena.environment = new THREE.PMREMGenerator(r).fromScene(new RoomEnvironment(), 0.04).texture;
+  const luz = new THREE.DirectionalLight(0xffffff, 1.35); luz.position.set(-0.6, 1, 1.2); cena.add(luz);
+  cena.add(new THREE.AmbientLight(0xffffff, 0.22));
+  const cam = new THREE.PerspectiveCamera(30, 1, 10, 20000);
+  return { r, cena, cam, canvas };
+}
+let A = null, B = null;
+try {
+  const c = document.createElement('canvas'); document.getElementById('fundo').prepend(c);
+  A = palco(c, true); B = palco(document.getElementById('frente'), true);
+  document.documentElement.classList.add('gl');
+} catch (e) { console.warn('sem WebGL: fica o selo em HTML', e); A = B = null; }
+
+/* geometria: o contorno real de cada forma, extrudado com chanfro, do mesmo tamanho da forma plana */
+function geometria(f, unidade, passos = 5, fundo = 0.24) {
+  const s = new THREE.Shape(), bev = 0.035;
+  f.pts.forEach((p, i) => { const x = (p[0] - f.w / 2) / unidade, y = -(p[1] - f.h / 2) / unidade; i ? s.lineTo(x, y) : s.moveTo(x, y); });
+  const g = new THREE.ExtrudeGeometry(s, { depth: fundo, bevelEnabled: true, bevelThickness: 0.05, bevelSize: bev, bevelSegments: passos, curveSegments: 4 });
+  const sw = f.w / unidade, k = sw / (sw + 2 * bev);
+  g.translate(0, 0, -fundo / 2); g.scale(k, k, 1); g.computeVertexNormals(); return g;
+}
+const geoPeca = geometria(F1, F1.w, 5, 0.14);                     // largura 1 (o tamanho vem da escala, em px)
+
+let W = 1, H = 1, D = 1;
+function cameras() {
+  const cv = document.getElementById('frente'); W = cv.clientWidth; H = cv.clientHeight;
+  D = (H / 2) / Math.tan(THREE.MathUtils.degToRad(15));   // em z = 0, 1 unidade = 1 px da tela
+  for (const P of [A, B]) { if (!P) continue; P.r.setSize(W, H, false); P.cam.aspect = W / H; P.cam.position.set(0, 0, D); P.cam.updateProjectionMatrix(); P.cam.updateMatrixWorld(); }
+}
+const mundo = (r, alvo) => alvo.set(r.left + r.width / 2 - W / 2, H / 2 - (r.top + r.height / 2), 0);
+
+/* parede de estampa: uma instância por forma, ladrilhada; as três peças que saem deixam o buraco */
+const PAREDE_Z = -520, k1 = FORMAS.formas.indexOf(F1);
+const geosParede = FORMAS.formas.map(f => geometria(f, 321, 2));
+// fundo da abertura em teste (17/10, "ainda não gosto do fundo da home"): ?fundo=a faixa da estampa embaixo · b relevo
+// tom sobre tom (só vermelhos escuros) · c a parede viva desfoca quando o título entra · sem nada = afunda e escurece
+const FUNDO = new URLSearchParams(location.search).get('fundo') || 'vermelhos';  // a parede da 1ª versão, só nos vermelhos (ele, 17/10)
+const SEM_ROSA = { '#F6C9CD': '#A3142A' };   // o rosa-claro apagava o branco do título: na parede ele vira um vermelho fundo
+if (FUNDO === 'vidro') document.querySelector('#fundo .veu').style.opacity = 0.5; else document.getElementById('vidro').classList.remove('vidro');
+const RELEVO = { '#EF3D48': '#A8122A', '#C21A30': '#8E0E22', '#5E0912': '#600814', '#F6C9CD': '#B8162D' };
+if (FUNDO === 'a') document.documentElement.classList.add('fundo-a');
+const EIXO_Y = new THREE.Vector3(0, 1, 0), qg = new THREE.Quaternion();
+if (FUNDO === 'a') document.querySelector('#fundo .veu').style.opacity = 0.35;
+const matsParede = FORMAS.formas.map(f => new THREE.MeshStandardMaterial({
+  color: FUNDO === 'b' ? new THREE.Color(RELEVO[f.cor.toUpperCase()] || f.cor)
+       : FUNDO === 'vermelhos' ? new THREE.Color(SEM_ROSA[f.cor.toUpperCase()] || f.cor).multiplyScalar(0.66)
+       : new THREE.Color(f.cor).multiplyScalar(0.7),
+  roughness: FUNDO === 'b' ? 0.66 : 0.55, metalness: 0, envMapIntensity: FUNDO === 'b' ? 0.12 : 0.28 }));
+let meiaAltura = FORMAS.formas.map(() => 0);   // meia altura de cada forma na tela (corte limpo do caminho A)
+let parede = new THREE.Group(), inst = [], saidas = [], escParede = 1, larguraFeita = 0, alturaFeita = 0;
+const BRANCO = new THREE.Color(1, 1, 1);
+/* a zona do título (rótulo + selo + data): ali a parede abre espaço — retorno dele, 17/10: "o fundo que se mexe ficou
+   muito legal, mas oculta os escritos" */
+const zonaEls = ['#abertura .rotulo', '#selo-abertura', '#abertura .quando'].map(s => document.querySelector(s));
+function zonaTitulo() {
+  let l = 1e9, t = 1e9, r = -1e9, b = -1e9;
+  zonaEls.forEach(el => { const q = el.getBoundingClientRect(); l = Math.min(l, q.left); t = Math.min(t, q.top); r = Math.max(r, q.right); b = Math.max(b, q.bottom); });
+  return { cx: (l + r) / 2, cy: (t + b) / 2, rx: (r - l) / 2 + 60, ry: (b - t) / 2 + 50 };
+}
+function montarParede() {
+  if (!A) return;
+  A.cena.remove(parede); inst.forEach(m => m.dispose()); parede = new THREE.Group(); A.cena.add(parede);
+  const meiaH = Math.tan(THREE.MathUtils.degToRad(15)) * (D - PAREDE_Z), meiaW = meiaH * W / H;
+  const tileW = Math.max(W, H) * (W < 700 ? 0.6 : 0.42), s = tileW / FORMAS.tile[0], tileH = FORMAS.tile[1] * s;
+  const nx = Math.ceil((meiaW * 2) / tileW) + 3, ny = Math.ceil((meiaH * 2 + H) / tileH) + 3, tiles = [];
+  for (let iy = -1; iy < ny; iy++) for (let ix = -1; ix < nx; ix++) tiles.push([-meiaW + ix * tileW - tileW * 0.18, meiaH - iy * tileH + tileH * 0.12]);
+  escParede = s * 321;
+  meiaAltura = FORMAS.formas.map(f => f.h * s / 2 * D / (D - PAREDE_Z));
+  inst = FORMAS.formas.map((f, k) => {
+    const im = new THREE.InstancedMesh(geosParede[k], matsParede[k], tiles.length);
+    im.frustumCulled = false;
+    im.userData = { base: tiles.map(([ox, oy]) => new THREE.Vector3(ox + (f.x + f.w / 2) * s, oy - (f.y + f.h / 2) * s, PAREDE_Z)),
+                    fase: tiles.map(() => Math.random() * 6.283) };
+    for (let j = 0; j < tiles.length; j++) im.setColorAt(j, BRANCO);
+    parede.add(im); return im;
+  });
+  // as três que saem: a forma do selo mais perto do centro, da esquerda para a direita
+  const alvoY = FUNDO === 'a' ? -meiaH * 0.72 : 0;                    // caminho A: saem da faixa de baixo
+  saidas = inst[k1].userData.base.map((p, idx) => ({ idx, p })).sort((a, b) => Math.hypot(a.p.x, (a.p.y - alvoY) * 1.4) - Math.hypot(b.p.x, (b.p.y - alvoY) * 1.4))
+    .slice(0, 3).sort((a, b) => a.p.x - b.p.x).map(c => c.idx);
+  larguraFeita = W; alturaFeita = H;
+}
+
+/* as três peças do selo (palco da frente) */
+const pecas = [0, 1, 2].map(i => {
+  const m = new THREE.Mesh(geoPeca, new THREE.MeshPhysicalMaterial({ color: COR_ABERTURA[i], emissive: COR_ABERTURA[i], emissiveIntensity: 0.1, roughness: 0.34, envMapIntensity: 0.55, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.12 }));
+  m.visible = false; if (B) B.cena.add(m); return m;
+});
+
+cameras(); montarParede();
+addEventListener('relayout', () => { cameras(); if (W !== larguraFeita || Math.abs(H - alturaFeita) > 140) montarParede(); });
+addEventListener('pointermove', ev => { E.tx = ev.clientX / innerWidth - 0.5; E.ty = ev.clientY / innerHeight - 0.5; }, { passive: true });
+
+/* entrada: a parede chega, as peças saem dela uma a uma e encaixam no título; depois o texto sobe */
+if (!REDUZ) {
+  gsap.set('#abertura .mk > div', { opacity: 0, y: 26, filter: 'blur(10px)' });
+  gsap.set('#abertura .revela', { opacity: 0, y: 14 });
+  const tl = gsap.timeline({ delay: 0.2 });
+  if (A) { tl.fromTo(parede.position, { z: -300 }, { z: 0, duration: 1.5, ease: 'power3.out' }, 0);
+           tl.fromTo(A.canvas, { opacity: 0 }, { opacity: 1, duration: 1.1, ease: 'power1.out' }, 0); }
+  tl.to(E, { forma: 1, duration: 2.4, ease: 'none' }, 0.6);
+  if (FUNDO === 'vidro') tl.fromTo('#vidro', { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 1.1, ease: 'power2.out' }, 1.5);
+  tl.to('#abertura .mk > div', { opacity: 1, y: 0, filter: 'blur(0px)', clearProps: 'filter', duration: 1.0, stagger: 0.14, ease: 'power3.out' }, 2.1);
+  tl.to('#abertura .revela', { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out' }, 2.45);
+}
+
+/* quadro a quadro */
+const m4 = new THREE.Matrix4(), q0 = new THREE.Quaternion(), sv = new THREE.Vector3(), pv = new THREE.Vector3(), pw = new THREE.Vector3(), cor = new THREE.Color();
+const ini = new THREE.Vector3(), alvoA = new THREE.Vector3(), alvoB = new THREE.Vector3(), meio = new THREE.Vector3(),
+      q1 = new THREE.Vector3(), q2 = new THREE.Vector3(), pos = new THREE.Vector3();
+const cIni = new THREE.Color(), cA = new THREE.Color(), cB = new THREE.Color();
+const imgsA = () => [...document.querySelectorAll('#selo-abertura .pecas img')];
+const barras = [...document.querySelectorAll('#barras .barra')];
+const abertura = document.getElementById('abertura');
+const easeIO = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const prog = i => Math.min(1, Math.max(0, (E.forma - i * 0.13) / 0.62));   // cada peça sai um pouco depois da outra
+let mx = 0, my = 0, ultimo = 0, media = 16, leve = false;
+function quadro(agora) {
+  const t = agora / 1000;
+  if (ultimo) media += ((agora - ultimo) - media) * 0.05; ultimo = agora;
+  if (!leve && A && t > 1.5 && media > 34) { leve = true; A.r.setPixelRatio(0.75); A.r.setSize(W, H, false); }   // aparelho lento: fundo em resolução menor
+  mx += (E.tx - mx) * 0.06; my += (E.ty - my) * 0.06;
+  const naAbertura = abertura.getBoundingClientRect().bottom > 0;
+  if (A && naAbertura) {
+    parede.position.y = scrollY * 0.5;
+    parede.rotation.y = -0.1 + mx * 0.1; parede.rotation.x = (FUNDO === 'a' ? -0.38 : -0.2) + my * 0.06;
+    parede.updateMatrixWorld(true);
+    // o título abre espaço (cada caminho de um jeito; a parede segue mexendo)
+    const z = zonaTitulo(), abre = REDUZ ? 1 : Math.min(1, Math.max(0, (E.forma - 0.3) / 0.5));
+    const linha = z.cy + z.ry - 14;                   // caminho A: a estampa só abaixo do título
+    inst.forEach((im, k) => { const u = im.userData;
+      for (let j = 0; j < u.base.length; j++) {
+        const b = u.base[j];
+        pw.copy(b).applyMatrix4(parede.matrixWorld).project(A.cam);
+        const sy = (0.5 - pw.y * 0.5) * H;
+        const dx = ((pw.x * 0.5 + 0.5) * W - z.cx) / z.rx, dy = (sy - z.cy) / z.ry;
+        const d = Math.sqrt(Math.sqrt(dx ** 4 + dy ** 4));             // distância em "retângulo arredondado"
+        const f = abre * (1 - THREE.MathUtils.smoothstep(d, 1, 1.5));
+        let zz = 0, giro = 0, esc = escParede, fino = 1, luz = 1;
+        if (FUNDO === 'atual') { zz = -f * 360; luz = 1 - f * 0.72; }                    // afunda e escurece
+        pv.set(b.x, b.y, b.z + Math.sin(t * 0.7 + u.fase[j]) * 9 + zz);
+        const sai = k === k1 ? saidas.indexOf(j) : -1;
+        if (sai >= 0 && prog(sai) > 0) esc = 1e-4;
+        sv.set(esc, esc, esc * fino); qg.setFromAxisAngle(EIXO_Y, giro);
+        m4.compose(pv, qg, sv); im.setMatrixAt(j, m4);
+        cor.setScalar(luz); im.setColorAt(j, cor);
+      }
+      im.instanceMatrix.needsUpdate = true; im.instanceColor.needsUpdate = true; });
+    if (FUNDO === 'a') { const lp = Math.round(linha), mk = `linear-gradient(to bottom, transparent ${lp}px, #000 ${lp + 2}px)`;   // faixa embaixo, corte reto
+      if (A.canvas.dataset.mk !== mk) { A.canvas.dataset.mk = mk; A.canvas.style.webkitMaskImage = mk; A.canvas.style.maskImage = mk; } }
+    if (FUNDO === 'c') { const ft = `blur(${(abre * 7).toFixed(1)}px) brightness(${(1 - abre * 0.38).toFixed(2)})`;   // foco no título
+      if (A.canvas.style.filter !== ft) A.canvas.style.filter = ft; }
+    A.r.render(A.cena, A.cam);
+  }
+  if (B) {
+    const vg = easeIO(Math.min(1, Math.max(0, E.viagem)));
+    const fundo = Math.sin(vg * Math.PI), alvos = imgsA();
+    pecas.forEach((m, i) => {
+      const p = prog(i), pe = 1 - Math.pow(1 - p, 3);
+      // 1) da parede ao título
+      if (A && saidas[i] !== undefined) ini.copy(inst[k1].userData.base[saidas[i]]).applyMatrix4(parede.matrixWorld);
+      else ini.set(0, -H, PAREDE_Z);
+      const escIni = A ? escParede * F1.w / 321 : 1;
+      const ra = alvos[i] ? alvos[i].getBoundingClientRect() : null;
+      if (ra) mundo(ra, alvoA); else alvoA.set(0, 0, 0);
+      const escA = ra ? ra.width : 1;
+      meio.lerpVectors(ini, alvoA, 0.5); meio.z = 300 + i * 70;            // sobem em arco, na direção de quem olha
+      q1.lerpVectors(ini, meio, pe); q2.lerpVectors(meio, alvoA, pe); pos.lerpVectors(q1, q2, pe);
+      let esc = THREE.MathUtils.lerp(escIni, escA, pe);
+      // 2) do título às peças de "Ascensão"
+      const rb = barras[i].getBoundingClientRect();
+      mundo(rb, alvoB); pos.lerp(alvoB, vg); esc = THREE.MathUtils.lerp(esc, rb.width, vg);
+      pos.z += fundo * (160 + i * 120);                                     // na viagem, cada uma numa profundidade
+      const pul = E.pulso[i].v, salto = Math.sin(pul * Math.PI);
+      m.position.copy(pos); m.position.y += salto * esc * 0.2;
+      m.scale.setScalar(esc * (1 + salto * 0.05));
+      const voo = Math.sin(pe * Math.PI);
+      m.rotation.set(
+        voo * 0.9 + fundo * 0.5 + my * 0.3 * (1 - vg),
+        pe * Math.PI * 2 * (i % 2 ? -1 : 1) + E.giro + fundo * 0.35 + mx * 0.4 * (1 - vg) + pul * Math.PI * 2,
+        voo * 0.25 * (i - 1) - fundo * 0.15 * (i - 1));
+      cIni.set(F1.cor).multiplyScalar(0.7); cA.set(COR_ABERTURA[i]); cB.set(COR_CONCEITO[i]);
+      m.material.color.copy(cIni).lerp(cA, Math.min(1, pe * 1.3)).lerp(cB, vg);
+      m.material.emissive.copy(m.material.color);
+      m.visible = p > 0;
+    });
+    B.r.render(B.cena, B.cam);
+  }
+  requestAnimationFrame(quadro);
+}
+if (A || B) requestAnimationFrame(quadro);
+window.__pronto = true;
+</script>
+</body>
+</html>
