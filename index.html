@@ -288,13 +288,13 @@
   <img class="rev" src="assets/credfranco-logo-reversed.svg" alt="CREDFRANCO">
   <img class="clean" src="assets/credfranco-logo-clean.svg" alt="CREDFRANCO">
   <span class="t">Encontro de Lideranças Comerciais</span>
-  <div class="abas"><a href="./" aria-current="page">Identidade</a><a href="grafica.html">Para a gráfica</a></div>
+  <div class="abas"><a href="./" aria-current="page">Identidade</a><a href="mockups.html">Mockups</a></div>
   <div class="chave" role="group" aria-label="Versão do selo">
     <button type="button" data-selo="a" class="on">Selo A<span> · Ascensão</span></button>
     <button type="button" data-selo="b">Selo B<span> · Ao lado</span></button>
   </div>
 </nav>
-<nav class="abas-barra" aria-label="Páginas"><a href="./" aria-current="page">Identidade</a><a href="grafica.html">Para a gráfica</a></nav>
+<nav class="abas-barra" aria-label="Páginas"><a href="./" aria-current="page">Identidade</a><a href="mockups.html">Mockups</a></nav>
 
 <main>
   <!-- 1 -->
@@ -501,6 +501,15 @@ window.SELO = (function () {
     return K.map((k, i) => { const im = document.createElement('img'); im.src = `assets/peca-${cores[i]}.png`; im.alt = '';
       im.style.width = (k * w) + 'px'; im.style.height = (k * w * RAZAO) + 'px'; box.appendChild(im); return im; });
   }
+  // tinta (não a caixa) de um texto: a caixa leva o respiro lateral das letras. Peças e guias vão na tinta (27/10, ele:
+  // "arruma essas linhas": a guia da esquerda passava ~9 px antes das letras e "Lideranças" passava da guia da direita)
+  const tintaEl = el => { const tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), ns = [];
+    while (tw.nextNode()) if (tw.currentNode.data.trim()) ns.push(tw.currentNode);
+    const ponta = (n, i) => { const r = document.createRange(); r.setStart(n, i); r.setEnd(n, i + 1); const cs = getComputedStyle(n.parentElement);
+      cv.font = `${cs.fontWeight} ${cs.fontSize} Ubuntu`; if (!semLS) cv.letterSpacing = '0px';
+      return { x: r.getBoundingClientRect().left, m: cv.measureText(n.data[i]) }; };
+    const n0 = ns[0], n1 = ns[ns.length - 1], p = ponta(n0, n0.data.search(/\S/)), u = ponta(n1, n1.data.trimEnd().length - 1);
+    return { l: p.x - p.m.actualBoundingBoxLeft, r: u.x + u.m.actualBoundingBoxRight }; };
   function montar(selo) {
     const bq = selo.querySelector('.b'), aq = selo.querySelector('.a');
     if (!aq.querySelector('.la') && /Lideranças/.test(aq.textContent)) aq.innerHTML = aq.textContent.replace('Lideranças', '<span class="la">Lideran</span><span class="lb">ças</span>');
@@ -508,9 +517,11 @@ window.SELO = (function () {
     selo.style.paddingTop = ''; selo.style.paddingLeft = '';
     const S = parseFloat(getComputedStyle(selo.querySelector('.a')).fontSize);
     const e = selo.querySelector('.e'), a = selo.querySelector('.a'), b = selo.querySelector('.b');
+    const kd = b.querySelector('.kd');   // "Comerciais" termina onde termina "Lideranças" (na tinta): o "s" final anda 3 espaços do "iais"
+    if (kd) { kd.style.letterSpacing = ''; const d = (tintaEl(a).r - tintaEl(b).r) / 3; kd.style.letterSpacing = `calc(.008em + ${d.toFixed(2)}px)`; }
     const soma = K.reduce((s, k) => s + k, 0) + 2 * G;
     if (selo.classList.contains('principal')) {
-      const w = (tr(a).right - (tr(e).right + 0.12 * S)) / soma;
+      const w = (tintaEl(a).r - (tr(e).right + 0.12 * S)) / soma;
       selo.style.paddingTop = Math.max(0, w * RAZAO - (base(e) - e.getBoundingClientRect().top)) + 'px';
       const ims = pecas(selo, w), sr = selo.getBoundingClientRect(), y = base(e) - sr.top;
       let x = tr(e).right + 0.12 * S - sr.left;
@@ -582,7 +593,7 @@ window.SELO = (function () {
     if (selo.dataset.htmlA && selo.classList.contains('modoB')) { selo.innerHTML = selo.dataset.htmlA; selo.classList.remove('modoB'); selo.style.width = ''; selo.style.height = ''; }
     montar(selo);
   }
-  return { montarTodos: () => document.querySelectorAll('.selo').forEach(montarUm),
+  return { tinta: tintaEl, montarTodos: () => document.querySelectorAll('.selo').forEach(montarUm),
            modo: () => modo, mudar: m => { modo = m; try { localStorage.setItem('seloEncontro', m); } catch (e) {} } };
 })();
 
@@ -632,16 +643,17 @@ function desenharGuias() {
   const r0 = ims[0].getBoundingClientRect(), r2 = ims[2].getBoundingClientRect();
   const rg = document.createRange(); rg.selectNodeContents(selo.querySelector('.a')); const ar = rg.getBoundingClientRect();
   const re = document.createRange(); re.selectNodeContents(selo.querySelector('.e')); const er = re.getBoundingClientRect();
-  const X = v => v - cr.left, Y = v => v - cr.top;
+  const X = v => v - cr.left, Y = v => v - cr.top, tr2 = el => { const r = document.createRange(); r.selectNodeContents(el); return r.getBoundingClientRect(); };
   svg.setAttribute('viewBox', `0 0 ${cr.width} ${cr.height}`);
   if (SELO.modo() === 'b') {
     const rb = document.createRange(); rb.selectNodeContents(selo.querySelector('.b'));
     const dir = Math.max(er.right, ar.right, rb.getBoundingClientRect().right);
     svg.innerHTML = `<line x1="${X(r0.left) - 30}" y1="${Y(r2.top)}" x2="${X(dir) + 30}" y2="${Y(r2.top)}"/>
     <line x1="${X(r0.left) - 30}" y1="${Y(r2.bottom)}" x2="${X(dir) + 30}" y2="${Y(r2.bottom)}"/>`;
-  } else svg.innerHTML = `<line x1="${X(er.left) - 30}" y1="${Y(r0.bottom)}" x2="${X(r2.right) + 30}" y2="${Y(r0.bottom)}"/>
-    <line x1="${X(ar.left)}" y1="${Y(r2.top) - 26}" x2="${X(ar.left)}" y2="${Y(ar.bottom) + 26}"/>
-    <line x1="${X(ar.right)}" y1="${Y(r2.top) - 26}" x2="${X(ar.right)}" y2="${Y(ar.bottom) + 26}"/>`;
+  } else { const ta = SELO.tinta(selo.querySelector('.a')), fim = Y(tr2(selo.querySelector('.b')).bottom) + 20;   // na tinta e até depois de "Comerciais"
+    svg.innerHTML = `<line x1="${X(ta.l) - 30}" y1="${Y(r0.bottom)}" x2="${X(ta.r) + 30}" y2="${Y(r0.bottom)}"/>
+    <line x1="${X(ta.l)}" y1="${Y(r2.top) - 26}" x2="${X(ta.l)}" y2="${fim}"/>
+    <line x1="${X(ta.r)}" y1="${Y(r2.top) - 26}" x2="${X(ta.r)}" y2="${fim}"/>`; }
   svg.querySelectorAll('line').forEach(l => { const n = Math.hypot(l.x2.baseVal.value - l.x1.baseVal.value, l.y2.baseVal.value - l.y1.baseVal.value);
     l.style.strokeDasharray = n; l.style.strokeDashoffset = c.dataset.visto ? 0 : n; });
 }
