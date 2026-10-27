@@ -79,6 +79,26 @@
   .chave button.on { background: #fff; color: var(--tinta); }
   #nav.claro .chave { border-color: rgba(91, 91, 91, .3); } #nav.claro .chave button { color: var(--tinta); }
   #nav.claro .chave button.on { background: var(--tinta); color: #fff; }
+  /* abas (27/10, ele: "abrir mais uma página... a parte de produto de impressão para gráfica... como se fosse mais uma aba"):
+     no computador ficam no alto, antes da chave; no celular viram uma barra solta embaixo, ao alcance do dedo (fora do
+     #nav: o desfoque do nav claro prende o "fixed" dentro dele) */
+  .abas { margin-left: auto; display: flex; gap: 2px; }
+  .abas + .chave { margin-left: 14px; }
+  .abas a { font: 500 14px/1 'Ubuntu', sans-serif; color: rgba(255, 255, 255, .78); text-decoration: none; letter-spacing: .02em;
+            white-space: nowrap; padding: 0 14px; min-height: 40px; display: flex; align-items: center; }
+  .abas a[aria-current] { color: #fff; box-shadow: inset 0 -2px 0 #fff; }
+  #nav.claro .abas a { color: var(--leve); } #nav.claro .abas a[aria-current] { color: var(--tinta); box-shadow: inset 0 -2px 0 var(--carmim); }
+  .abas-barra { display: none; }
+  @media (max-width: 1100px) { #nav .t { display: none; } }
+  @media (max-width: 900px) {
+    #nav .abas { display: none; } .abas + .chave { margin-left: auto; }
+    .abas-barra { display: flex; position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+                  z-index: 45; background: #fff; border-radius: 999px; padding: 4px; gap: 2px; box-shadow: 0 10px 30px rgba(40, 0, 8, .28); }
+    .abas-barra a { font: 500 14px/1 'Ubuntu', sans-serif; color: var(--tinta); text-decoration: none; white-space: nowrap; letter-spacing: .02em;
+                    padding: 0 18px; min-height: 44px; display: flex; align-items: center; border-radius: 999px; }
+    .abas-barra a[aria-current] { background: var(--carmim); color: #fff; }
+    #abertura .desce { bottom: 92px; } main #fim { padding-bottom: 120px; }   /* a barra não cobre a seta nem o rodapé */
+  }
   /* selo B · Ao lado (caminho 1, 19/10): mesmo símbolo do A, ao lado do nome; montado pelo SELO (medido na tinta) */
   .selo.modoB > .wb, .selo.modoB > .pecas { position: absolute; }
   .selo.modoB > .pecas { inset: 0; } .selo.modoB .pecas img { max-width: none; }
@@ -268,11 +288,13 @@
   <img class="rev" src="assets/credfranco-logo-reversed.svg" alt="CREDFRANCO">
   <img class="clean" src="assets/credfranco-logo-clean.svg" alt="CREDFRANCO">
   <span class="t">Encontro de Lideranças Comerciais</span>
+  <div class="abas"><a href="./" aria-current="page">Identidade</a><a href="grafica.html">Para a gráfica</a></div>
   <div class="chave" role="group" aria-label="Versão do selo">
     <button type="button" data-selo="a" class="on">Selo A<span> · Ascensão</span></button>
     <button type="button" data-selo="b">Selo B<span> · Ao lado</span></button>
   </div>
 </nav>
+<nav class="abas-barra" aria-label="Páginas"><a href="./" aria-current="page">Identidade</a><a href="grafica.html">Para a gráfica</a></nav>
 
 <main>
   <!-- 1 -->
@@ -565,7 +587,9 @@ window.SELO = (function () {
 })();
 
 /* a chave de cima: troca o selo do site inteiro (as peças 3D remontam no desenho novo) */
-function marcarChave() { document.querySelectorAll('.chave button').forEach(b => b.classList.toggle('on', b.dataset.selo === SELO.modo())); }
+function marcarChave() { document.querySelectorAll('.chave button').forEach(b => b.classList.toggle('on', b.dataset.selo === SELO.modo()));
+  /* as abas levam o selo escolhido para a outra página */
+  document.querySelectorAll('.abas a, .abas-barra a').forEach(a => a.setAttribute('href', a.getAttribute('href').split('?')[0] + '?selo=' + SELO.modo())); }
 marcarChave();
 /* as fotos da seção "Na prática" trocam junto: aplic-*-b.webp = as mesmas fotos com o Selo B colado (ele, 19/10:
    "você tem que mudar os mockups também") */
