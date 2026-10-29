@@ -220,6 +220,8 @@
   .foto img { width: 100%; height: 118%; object-fit: cover; position: absolute; top: -9%; left: 0; }
   .foto.larga { grid-column: 1 / 3; aspect-ratio: 12 / 5; }
   .foto.alta { aspect-ratio: 4 / 5; } .foto.media { aspect-ratio: 1 / 1; }
+  /* sobrou uma sozinha na última linha (só a camisa 2 desde 29/10): no centro, na largura de uma coluna */
+  .fotos > .foto:last-child:nth-child(even) { grid-column: 1 / -1; justify-self: center; width: calc((100% - clamp(18px, 3vw, 28px)) / 2); }
   .fotos-nav { display: none; }
   .foto figcaption { position: absolute; left: 16px; bottom: 16px; background: #fff; color: var(--tinta); border-radius: 999px;
                      padding: 10px 18px; font-weight: 500; font-size: 14px; box-shadow: 0 8px 20px rgba(0,0,0,.15); }
@@ -413,10 +415,9 @@
         <figure class="foto alta"><img src="assets/aplic-agenda.webp?v=27" alt="Bloquinho e caneta" loading="lazy"><figcaption>Bloquinho e caneta</figcaption></figure>
         <figure class="foto alta"><img src="assets/aplic-copo-1.webp?v=27" alt="Copo branco no coffee break" loading="lazy"><figcaption>Copo branco</figcaption></figure>
         <figure class="foto alta"><img src="assets/aplic-copo-2.webp?v=27" alt="Copo vermelho na mão" loading="lazy"><figcaption>Copo vermelho</figcaption></figure>
-        <figure class="foto alta"><img src="assets/aplic-camisa-op1.webp?v=27" alt="Camisa vermelha com a logo da CREDFRANCO no peito, CF e IDEX nas mangas e o selo nas costas" loading="lazy"><figcaption>Camisa · logo no peito</figcaption></figure>
-        <figure class="foto alta"><img src="assets/aplic-camisa-op2.webp?v=27" alt="Camisa vermelha com o selo no peito, CREDFRANCO e CF nas mangas e a frase nas costas" loading="lazy"><figcaption>Camisa · frase nas costas</figcaption></figure>
+        <figure class="foto alta"><img src="assets/aplic-camisa-op2.webp?v=27" alt="Camisa vermelha com o selo no peito, CREDFRANCO e CF nas mangas e a frase nas costas" loading="lazy"><figcaption>Camisa</figcaption></figure>
       </div>
-      <div class="fotos-nav" aria-hidden="true"><span>Deslize para o lado</span><span class="barra-f"><i></i></span><span><b id="foto-n">1</b> de 7</span></div>
+      <div class="fotos-nav" aria-hidden="true"><span>Deslize para o lado</span><span class="barra-f"><i></i></span><span><b id="foto-n">1</b> de 6</span></div>
     </div>
   </section>
 
@@ -515,6 +516,7 @@ window.SELO = (function () {
     }
   }
   // só o selo A (29/10, ele: "tirar a opção B, deixar somente a A"): saíram a chave, o selo B e as fotos -b
+  // e só a camisa da opção 2 (29/10, ele: "Opção 2"; selo no peito, frase nas costas): saiu a aplic-camisa-op1
   const cv = document.createElement('canvas').getContext('2d');
   const semLS = !('letterSpacing' in cv);   // Safari sem letterSpacing no canvas
   return { tinta: tintaEl, montarTodos: () => document.querySelectorAll('.selo').forEach(montar), modo: () => 'a' };
