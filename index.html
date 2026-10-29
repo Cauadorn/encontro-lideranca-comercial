@@ -72,18 +72,10 @@
   #nav img { height: 44px; width: auto; }
   #nav .t { font-weight: 500; font-size: 14px; letter-spacing: .02em; color: #fff; white-space: nowrap; transition: color .4s; }
   #nav .clean { display: none; }
-  /* chave do selo (19/10, ele: "uma segunda opção no site, onde a gente possa mudar o selo... coloque ali em cima") */
-  .chave { margin-left: auto; display: flex; border: 1px solid rgba(255, 255, 255, .45); border-radius: 999px; padding: 3px; gap: 2px; }
-  .chave button { font: 500 13px/1 'Ubuntu', sans-serif; color: #fff; background: none; border: 0; border-radius: 999px;
-                  padding: 9px 14px; min-height: 36px; cursor: pointer; white-space: nowrap; letter-spacing: .02em; }
-  .chave button.on { background: #fff; color: var(--tinta); }
-  #nav.claro .chave { border-color: rgba(91, 91, 91, .3); } #nav.claro .chave button { color: var(--tinta); }
-  #nav.claro .chave button.on { background: var(--tinta); color: #fff; }
   /* abas (27/10, ele: "abrir mais uma página... a parte de produto de impressão para gráfica... como se fosse mais uma aba"):
-     no computador ficam no alto, antes da chave; no celular viram uma barra solta embaixo, ao alcance do dedo (fora do
+     no computador ficam no alto, à direita; no celular viram uma barra solta embaixo, ao alcance do dedo (fora do
      #nav: o desfoque do nav claro prende o "fixed" dentro dele) */
   .abas { margin-left: auto; display: flex; gap: 2px; }
-  .abas + .chave { margin-left: 14px; }
   .abas a { font: 500 14px/1 'Ubuntu', sans-serif; color: rgba(255, 255, 255, .78); text-decoration: none; letter-spacing: .02em;
             white-space: nowrap; padding: 0 14px; min-height: 40px; display: flex; align-items: center; }
   .abas a[aria-current] { color: #fff; box-shadow: inset 0 -2px 0 #fff; }
@@ -91,7 +83,7 @@
   .abas-barra { display: none; }
   @media (max-width: 1100px) { #nav .t { display: none; } }
   @media (max-width: 900px) {
-    #nav .abas { display: none; } .abas + .chave { margin-left: auto; }
+    #nav .abas { display: none; }
     .abas-barra { display: flex; position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
                   z-index: 45; background: #fff; border-radius: 999px; padding: 4px; gap: 2px; box-shadow: 0 10px 30px rgba(40, 0, 8, .28); }
     .abas-barra a { font: 500 14px/1 'Ubuntu', sans-serif; color: var(--tinta); text-decoration: none; white-space: nowrap; letter-spacing: .02em;
@@ -99,10 +91,6 @@
     .abas-barra a[aria-current] { background: var(--carmim); color: #fff; }
     #abertura .desce { bottom: 92px; } main #fim { padding-bottom: 120px; }   /* a barra não cobre a seta nem o rodapé */
   }
-  /* selo B · Ao lado (caminho 1, 19/10): mesmo símbolo do A, ao lado do nome; montado pelo SELO (medido na tinta) */
-  .selo.modoB > .wb, .selo.modoB > .pecas { position: absolute; }
-  .selo.modoB > .pecas { inset: 0; } .selo.modoB .pecas img { max-width: none; }
-  .selo.modoB .wb, .selo.modoB .wb > div { line-height: 1; white-space: nowrap; margin: 0; padding: 0; }
   #nav.claro { background: rgba(233, 233, 233, .88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 1px 0 rgba(91,91,91,.08); }
   #nav.claro .t { color: var(--tinta); } #nav.claro .rev { display: none; } #nav.claro .clean { display: block; }
 
@@ -258,7 +246,6 @@
 
   @media (max-width: 640px) {
     #nav .t { display: none; }
-    .chave button span { display: none; } .chave button { padding: 0 16px; min-height: 44px; }   /* alvo de dedo: 44 px */
     #fim small span { display: block; } #fim small .ponto { display: none; }   /* sem viúva no rodapé */
     #abertura .quando span { display: block; } #abertura .quando .ponto { display: none; }
     .grade4 { grid-template-columns: 1fr; }
@@ -289,10 +276,6 @@
   <img class="clean" src="assets/credfranco-logo-clean.svg" alt="CREDFRANCO">
   <span class="t">Encontro de Lideranças Comerciais</span>
   <div class="abas"><a href="./" aria-current="page">Identidade</a><a href="mockups.html">Mockups</a></div>
-  <div class="chave" role="group" aria-label="Versão do selo">
-    <button type="button" data-selo="a" class="on">Selo A<span> · Ascensão</span></button>
-    <button type="button" data-selo="b">Selo B<span> · Ao lado</span></button>
-  </div>
 </nav>
 <nav class="abas-barra" aria-label="Páginas"><a href="./" aria-current="page">Identidade</a><a href="mockups.html">Mockups</a></nav>
 
@@ -456,13 +439,9 @@
         <h3>O que levamos</h3>
         <p class="txt">Trouxemos esse sistema, não o desenho. Tudo aqui nasce do que já é da CREDFRANCO: o squircle, único grafismo da marca, e o vermelho da convenção, do vinho ao rosa. A estampa do encontro é feita das formas do squircle nesses tons. E tudo na escala do encontro: um dia, básico, sem gastar as ideias da Convenção de março.</p>
         <h3>O símbolo</h3>
-        <p class="txt">São três peças do squircle, o mesmo desenho em três tamanhos, que sobem como um gráfico e chegam ao vermelho mais forte no topo. É a frase do encontro em forma: liderança que move resultados. O símbolo é o mesmo nas duas opções de selo.</p>
-        <h3>Selo A · Ascensão</h3>
+        <p class="txt">São três peças do squircle, o mesmo desenho em três tamanhos, que sobem como um gráfico e chegam ao vermelho mais forte no topo. É a frase do encontro em forma: liderança que move resultados.</p>
+        <h3>O selo</h3>
         <p class="txt">As peças apoiam na linha de “Encontro de” e ocupam a largura de “Lideranças”, formando um bloco só. Quase quadrado, ele lê bem mesmo pequeno: no peito da camiseta, no crachá, no copo e no bloquinho.</p>
-        <h3>Selo B · Ao lado</h3>
-        <p class="txt">O mesmo símbolo vai para o lado do nome e ganha a altura dele, do topo de “Encontro de” à base de “Comerciais”. É horizontal: ocupa bem o telão, o painel de fundo, as faixas e os slides, e o símbolo aparece maior, como nas assinaturas de conferência.</p>
-        <h3>A escolha</h3>
-        <p class="txt">Símbolo, cores, fonte e estampa são os mesmos nos dois. A escolha é só qual deles assina o encontro. Qualquer uma mantém o evento com uma cara só.</p>
       </div>
     </div>
   </section>
@@ -535,94 +514,17 @@ window.SELO = (function () {
       ims.forEach((im, i) => { im.style.left = x + 'px'; im.style.top = (y - K[i] * w * RAZAO) + 'px'; x += (K[i] + G) * w; });
     }
   }
-  // ---- selo B · Ao lado (19/10, PROPOSTA; caminho 1, escolhido por ele; o mesmo do 01 Fontes/selo_B2.js, ref. conference
-  // 2025): o símbolo do A à esquerda, da altura do bloco (a peça maior vai do topo do E à base de "Comercial"), e o nome em
-  // 3 linhas no mesmo corpo à direita. Entrelinha 1,02: o "ç" de "Liderança" fica em cima do "i" de "Comercial" (folga ~9%).
-  // O B anterior (· Conexão, com frase e etiqueta 2026) foi reprovado: "ficou muito complexo... nos produtos vai ficar estranho".
-  const BASE = 0.8715, cv = document.createElement('canvas').getContext('2d');
-  const semLS = !('letterSpacing' in cv);   // Safari sem letterSpacing no canvas: soma o espacejamento na mão
-  const tinta = (txt, peso, fs, ls) => { cv.font = `${peso} ${fs}px Ubuntu`; if (!semLS) cv.letterSpacing = (ls * fs) + 'px';
-    const m = cv.measureText(txt); return { l: -m.actualBoundingBoxLeft, r: m.actualBoundingBoxRight + (semLS ? ls * fs * (txt.length - 1) : 0), up: m.actualBoundingBoxAscent, dn: m.actualBoundingBoxDescent }; };
-  function planoB(S) {
-    const itens = [], caixas = [], P = 1.02;
-    const texto = (txt, peso, fs, ls, cls, x, y) => { const t = tinta(txt, peso, fs, ls);
-      itens.push({ tipo: 'txt', txt, peso, fs, ls, cls, l: x - t.l, t: y - BASE * fs });
-      const c = { x0: x, x1: x + t.r - t.l, y0: y - t.up, y1: y + t.dn }; caixas.push(c); return c; };
-    const base = 2 * P * S, w = (base + tinta('E', 400, S, 0).up) / RAZAO;
-    let x = 0;
-    K.forEach((k, i) => { const h = k * w * RAZAO; itens.push({ tipo: 'peca', i, l: x, t: base - h, w: k * w });
-      caixas.push({ x0: x, x1: x + k * w, y0: base - h, y1: base }); x += (k + G) * w; });
-    const xt = x - G * w + 0.34 * S;
-    texto('Encontro de', 400, S, -0.02, 'e', xt, 0);
-    const L = texto('Lideranças', 700, S, -0.04, 'a', xt, P * S);
-    const t0 = tinta('Comerciais', 400, S, -0.035), lsC = -0.035 + ((L.x1 - L.x0) - (t0.r - t0.l)) / (9 * S);   // mesma largura de "Lideranças"
-    texto('Comerciais', 400, S, lsC, 'b', xt, base);
-    const bx0 = Math.min(...caixas.map(c => c.x0)), by0 = Math.min(...caixas.map(c => c.y0));
-    const bx1 = Math.max(...caixas.map(c => c.x1)), by1 = Math.max(...caixas.map(c => c.y1));
-    return { itens, bx0, by0, W: bx1 - bx0, H: by1 - by0 };
-  }
-  function montarB(selo) {
-    if (!selo.dataset.htmlA) selo.dataset.htmlA = selo.innerHTML;
-    const reduzida = selo.classList.contains('horizontal'), cores = selo.dataset.cores.split(',');
-    selo.classList.add('modoB'); selo.style.paddingTop = ''; selo.style.paddingLeft = '';
-    const sonda = document.createElement('div'); sonda.style.fontSize = 'var(--s)'; selo.appendChild(sonda);
-    const Sa = parseFloat(getComputedStyle(sonda).fontSize); sonda.remove();
-    const pai = selo.closest('.c, .cartao, section'), cs = getComputedStyle(pai);   // o #vidro encolhe no conteúdo: mede a seção
-    const livre = pai.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    const p100 = planoB(100);
-    const S = Math.min(Sa * (reduzida ? 0.8 : 0.55), 100 * livre * 0.96 / p100.W);   // o nome lado a lado pede corpo menor que o A
-    const pl = planoB(S), mascara = selo.classList.contains('tresd');
-    selo.innerHTML = '<div class="pecas"></div>';
-    const box = selo.firstChild;
-    pl.itens.forEach(it => {
-      const l = (it.l - pl.bx0) + 'px', t = (it.t - pl.by0) + 'px';
-      if (it.tipo === 'peca') { const im = document.createElement('img'); im.src = `assets/peca-${cores[it.i]}.png`; im.alt = '';
-        Object.assign(im.style, { left: l, top: t, width: it.w + 'px', height: it.w * RAZAO + 'px' }); box.appendChild(im); }
-      else { const w = document.createElement('span'); w.className = 'wb' + (mascara ? ' mk' : '');
-        const d = document.createElement('div'); d.className = it.cls; d.textContent = it.txt;
-        Object.assign(d.style, { fontWeight: it.peso, fontSize: it.fs + 'px', letterSpacing: it.ls + 'em' });
-        Object.assign(w.style, { left: l, top: t }); w.appendChild(d); selo.appendChild(w); }
-    });
-    selo.style.width = pl.W + 'px'; selo.style.height = pl.H + 'px';
-  }
-  let modo = 'a';
-  try { modo = (new URLSearchParams(location.search).get('selo') || localStorage.getItem('seloEncontro') || 'a').toLowerCase(); } catch (e) {}
-  if (modo !== 'b') modo = 'a';
-  function montarUm(selo) {
-    if (modo === 'b') return montarB(selo);
-    if (selo.dataset.htmlA && selo.classList.contains('modoB')) { selo.innerHTML = selo.dataset.htmlA; selo.classList.remove('modoB'); selo.style.width = ''; selo.style.height = ''; }
-    montar(selo);
-  }
-  return { tinta: tintaEl, montarTodos: () => document.querySelectorAll('.selo').forEach(montarUm),
-           modo: () => modo, mudar: m => { modo = m; try { localStorage.setItem('seloEncontro', m); } catch (e) {} } };
+  // só o selo A (29/10, ele: "tirar a opção B, deixar somente a A"): saíram a chave, o selo B e as fotos -b
+  const cv = document.createElement('canvas').getContext('2d');
+  const semLS = !('letterSpacing' in cv);   // Safari sem letterSpacing no canvas
+  return { tinta: tintaEl, montarTodos: () => document.querySelectorAll('.selo').forEach(montar), modo: () => 'a' };
 })();
 
-/* a chave de cima: troca o selo do site inteiro (as peças 3D remontam no desenho novo) */
-function marcarChave() { document.querySelectorAll('.chave button').forEach(b => b.classList.toggle('on', b.dataset.selo === SELO.modo()));
-  /* as abas levam o selo escolhido para a outra página */
-  document.querySelectorAll('.abas a, .abas-barra a').forEach(a => a.setAttribute('href', a.getAttribute('href').split('?')[0] + '?selo=' + SELO.modo())); }
-marcarChave();
-/* as fotos da seção "Na prática" trocam junto: aplic-*-b.webp = as mesmas fotos com o Selo B colado (ele, 19/10:
-   "você tem que mudar os mockups também") */
-function trocarFotos() { document.querySelectorAll('.fotos img').forEach(im => { if (!im.dataset.a) im.dataset.a = im.getAttribute('src');
-  const s = SELO.modo() === 'b' ? im.dataset.a.replace('.webp', '-b.webp') : im.dataset.a; if (im.getAttribute('src') !== s) im.setAttribute('src', s); }); }
-trocarFotos();
 /* carrossel do celular: barra e número da foto */
 (function () { const f = document.querySelector('.fotos'), n = document.getElementById('foto-n'), bar = document.querySelector('.fotos-nav i');
   const conta = () => { const max = f.scrollWidth - f.clientWidth; if (max <= 0) return; const k = f.scrollLeft / max;
     n.textContent = Math.round(k * 6) + 1; bar.style.width = (14 + k * 86) + '%'; };
   f.addEventListener('scroll', conta, { passive: true }); })();
-document.querySelectorAll('.chave button').forEach(b => b.addEventListener('click', () => {
-  if (b.dataset.selo === SELO.modo()) return;
-  SELO.mudar(b.dataset.selo); marcarChave(); trocarFotos();
-  SELO.montarTodos(); desenharGuias();
-  if (window.ScrollTrigger) ScrollTrigger.refresh();
-  dispatchEvent(new Event('relayout'));
-  if (window.gsap && !REDUZ) {
-    if (scrollY < innerHeight * 0.6) gsap.fromTo(E, { forma: 0.42 }, { forma: 1, duration: 1.5, ease: 'power2.out' });
-    gsap.fromTo('#selo-abertura .mk > div', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'power2.out', delay: 0.35 });
-  }
-}));
 
 /* a grade da estampa com os contornos reais (a forma do selo em vermelho) */
 function desenharGrade() {
